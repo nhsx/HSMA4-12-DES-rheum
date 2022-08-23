@@ -1,7 +1,6 @@
-name: streamlit
+name: streamlit1
 channels:
   - defaults
-  - conda-forge
 dependencies:
   - jupyterlab
   - matplotlib
