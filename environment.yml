@@ -7,4 +7,5 @@ dependencies:
   - numpy
   - pandas
   - seaborn
+  - simpy
 prefix: C:\Users\marti\anaconda3\envs\streamlit1
