@@ -1,14 +1,17 @@
-name: streamlit1
+name: streamlit
 channels:
   - defaults
+  - conda-forge
 dependencies:
-  - python=3.8
+  - jupyterlab
   - matplotlib
   - numpy
-  - pandas
-  - seaborn
   - pip
+  - pandas
+  - python=3.8
+  - scikit-learn
+  - scipy
+  - spyder
   - pip:
-  	- simpy
-	- streamlit
-prefix: C:\Users\marti\anaconda3\envs\streamlit1
+    - simpy
+    - streamlit
