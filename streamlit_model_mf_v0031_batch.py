@@ -137,6 +137,8 @@ if main_button:
     scenario1run = datetime.now()-start
     print(f"Run-time of {scenario1run}")
     # Show chart
+    st.write('Run-time:')
+    st.write(scenario1run)
     st.write('---')
     st.write('Core KPIs')
     #st.write(rheum_model.batch_kpi.iloc[[0,1,2,3,7],])
@@ -172,6 +174,8 @@ if tworuns_button:
     scenario1run = datetime.now()-start
     print(f"Run-time of {scenario1run}")
     # Show chart
+    st.write('Run-time:')
+    st.write(scenario1run)
     st.write('---')
     st.write('Core KPIs')
     #st.write(rheum_model.batch_kpi.iloc[[0,1,2,3,7],])
@@ -193,14 +197,15 @@ if tworuns_button:
     # for t in text:
     #     st.write(t)
     #st.write(quant)
-    st.write(scenario1run)
     
     st.subheader("Scenario 2")
     # Get results
     start=datetime.now()
-    fig_audit_reps_S2, chart_S2, text_S2 , quant_S2, fig_q_audit_reps_S2,fig_monappKPI_reps_S2, fig_monappKPIn_reps_S2 = rheum_model_S2.run_reps(2)
+    fig_audit_reps_S2, chart_S2, text_S2 , quant_S2, fig_q_audit_reps_S2,fig_monappKPI_reps_S2, fig_monappKPIn_reps_S2 = rheum_model_S2.run_reps(3)
     scenario2run = datetime.now()-start
     print(f"Run-time of {scenario2run}")
+    st.write('Run-time:')
+    st.write(scenario2run)
     st.write('---')
     st.write('Core KPIs')
     #st.write(rheum_model_S2.batch_kpi.iloc[[0,1,2,3,7],])
@@ -224,6 +229,6 @@ if tworuns_button:
     # for t in text_S2:
     #     st.write(t)
     #st.write(quant_S2)
-    st.write(scenario2run)
+    
 
 
