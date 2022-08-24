@@ -11,5 +11,12 @@ As such, in this project we propose to use Discrete Event Simulation - where ind
 *	Advocate and demonstrate the value of pathway and behavioural modelling in central decision-making for digital pathway redesign, elective recovery and the LTP personalisation agenda to support better patient care, experience and system resilience
 
 
+## Main model
+
+Can be run from `simpy_rheum_v004_run.py` in Python (spyder, VS Code). The main `simpy` model implementation is in `simpy_rheum_v0031.py`. 
+
 ## Toy tool
+
+A toy interactive app leveraging streamlit.
+
 [![Streamlit App](https://static.streamlit.io/badges/streamlit_badge_black_white.svg)](https://nhsx-hsma4-12-des-rheum-streamlit-model-mf-v0031-batch-e91w2z.streamlitapp.com/)
