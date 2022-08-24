@@ -7,7 +7,8 @@ import os
 import csv
 import random
 
-st.write('| Toy tool of backlog rheumatology outpatient Discrete Event Simulation Model. The effect of Patient Initiated Follow-up (PIFU) and Advice & Guidance (A&G) can be simulated. The runs may take 5-10 minutes, 3 simulation replications are used so caution is needed - more are used in report examples.')
+st.write('| Toy tool of backlog rheumatology outpatient Discrete Event Simulation Model. The effect of Patient Initiated Follow-up (PIFU) and Advice & Guidance (A&G) can be simulated. The runs may take 5-10 minutes, Only 3 simulation replications are used so caution is needed - more are used in report examples.')
+
 
 
 st.title('Rheumatology PIFU Queueing Simulation - main scenario')
@@ -125,13 +126,14 @@ st.title('Runs')
 with st.sidebar:
     main_button = st.button('Run rheum model - run main scenario',key="1")
     tworuns_button = st.button('Run rheum model - run both',key="2")
+    st.write('Development project. Not government policy')
 
 
 if main_button:
     # Get results
     start=datetime.now()
     random.seed(9001)
-    fig_audit_reps, chart, text , quant, fig_q_audit_reps,fig_monappKPI_reps,fig_monappKPIn_reps = rheum_model.run_reps(2)
+    fig_audit_reps, chart, text , quant, fig_q_audit_reps,fig_monappKPI_reps,fig_monappKPIn_reps = rheum_model.run_reps(3)
     scenario1run = datetime.now()-start
     print(f"Run-time of {scenario1run}")
     # Show chart
@@ -166,7 +168,7 @@ if tworuns_button:
     # Get results
     start=datetime.now()
     random.seed(9001)
-    fig_audit_reps, chart, text , quant, fig_q_audit_reps,fig_monappKPI_reps, fig_monappKPIn_reps = rheum_model.run_reps(2)
+    fig_audit_reps, chart, text , quant, fig_q_audit_reps,fig_monappKPI_reps, fig_monappKPIn_reps = rheum_model.run_reps(3)
     scenario1run = datetime.now()-start
     print(f"Run-time of {scenario1run}")
     # Show chart
