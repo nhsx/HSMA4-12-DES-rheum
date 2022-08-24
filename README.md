@@ -1,4 +1,5 @@
-# HSMA4-12-DES-rheum
+![image](https://user-images.githubusercontent.com/69211911/186386851-61f28c91-c9de-4018-be58-49d7fdc80385.png)
+
 
 ## Context 
 PIFU is where, based on clinical steer, a patient goes on a pathway where they can arrange their own follow-up appointments as-and-when-needed rather than attending regular scheduled appointments. It means for instance that time spent on low clinical value appointments can be repurposed for managing complex patients and upstream care. The interplay between the downstream efficiencies and the upstream referral-to-treatment waiting list, as well as changes to planned levels of resourcing and allocation, can however be hard to grasp.
