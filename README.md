@@ -14,7 +14,7 @@ As such, in this project we propose to use Discrete Event Simulation - where ind
 
 ## Main model
 
-Can be run from `simpy_rheum_v004_run.py` in Python (spyder, VS Code). The main `simpy` model implementation is in `simpy_rheum_v0031.py`. 
+Can be run from `simpy_rheum_v004_run.py` in Python (spyder, VS Code). The main `simpy` model implementation is in `simpy_rheum_v004.py`. 
 
 ## Toy tool
 
