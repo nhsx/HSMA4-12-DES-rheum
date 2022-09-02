@@ -7,8 +7,11 @@ Created on Mon May  9 16:50:31 2022
 
 import warnings
 warnings.simplefilter(action='ignore', category=FutureWarning)
-import simpy_rheum_v004 as rheum
+import simpy_rheum_v0031 as rheum
 import numpy as np
+import pandas as pd
+import seaborn as sns
+import matplotlib.pyplot as plt
 from datetime import datetime
 import os
 import csv
@@ -25,7 +28,7 @@ savepath = 'out_sand/'
 #savepath = 'bundleV2/out_10years_rep1_base_capplus5_12mshock100/'
 ##V1 vs V3 . V3 with 5+3 instead of 3+4 warm+obs. PIFU starts being offered at end of wamr-up to 'eligible at stock fup' patients not new 'stock new' patients.
 #savepath = 'bundleV3/out_central_rep30_pifu20_interpifu20/'
-#savepath = 'bundleV3_/out_central_rep30_pifu20_interpifu20/'
+#savepath = 'bundleV3_/out_central_rep30_pifu10/'
 start=datetime.now()
 file1 = savepath + 'patient_result2.csv'
 file2 = savepath + 'appt_result.csv'
@@ -61,8 +64,8 @@ if scriptrun_flag:
     in_FOavoidable = 0 # A&G proportion - proportion of first-only pathways avoidable via A&G | Baseline: 0 | Scenario: 0.43
     #in_FOavoidable = 0.43
     
-    #in_interfu_perc = 0.6 # Percentage increase in inter-appointment interval with PIFU (vs traditional), i.e. 0.6 means 60% longer interval | Baseline: 0.6 | Scenarios: 0.6, 0.2
-    in_interfu_perc = 0.2 #
+    in_interfu_perc = 0.6 # Percentage increase in inter-appointment interval with PIFU (vs traditional), i.e. 0.6 means 60% longer interval | Baseline: 0.6 | Scenarios: 0.6, 0.2
+    #in_interfu_perc = 0.2 #
     
     g_defaults = rheum.g()
     audit_interval = 28 # audit timepoint (in simulation days)
@@ -87,10 +90,36 @@ if scriptrun_flag:
 # =============================================================================  
     
     # Some output KPIs generated and printed
-    #my_batch_model.headline_KPI(365)    
-    #mydf = my_batch_model.headline_KPI(365)    
-    #my_batch_model.save_logs()           
+    my_batch_model.headline_KPI(365)    
+    mydf = my_batch_model.headline_KPI(365)    
+    my_batch_model.save_logs()           
     print(my_batch_model.batch_kpi)
+    
+    import simpy_rheum_v0031 as rheum
+    rheum.Batch_rheum_model.plot_audit_reps(my_batch_model)
+    my_batch_model.plot_audit_reps()
+    rheum.Batch_rheum_model.plot_monappKPI_reps(my_batch_model)
+    
+    # Once the trial is complete, we'll create an instance of the
+    # Trial_Result_Calculator class and run the print_trial_results method
+    my_trial_results_calculator = rheum.Trial_Results_Calculator(savepath)
+    my_trial_results_calculator.print_trial_results(savepath)
+    
+
+    # batch_mon_app_kpit = my_batch_model.batch_mon_app_kpit
+    # i=0
+    # prinames = ['Traditional F/U seen','PIFU F/U seen','RTT seen']
+    # pricolors = ['skyblue','orange','green']
+    # fig2, axes2 = plt.subplots(3,1, figsize=(20, 20), sharey=True)
+    # #fig.suptitle('Number seen per replication/interval')
+    # for pri in range(1,4):
+    #     data_now = batch_mon_app_kpit[batch_mon_app_kpit['KPI']=='Seen'].copy()
+    #     ax2=sns.boxplot(ax=axes2[i],x='interval',y='q_time',data=data_now[data_now['priority']==pri],color=pricolors[i-1])
+    #     ax2.set_xticklabels(ax2.get_xticklabels(),rotation = 80)
+    #     if pri==3:
+    #         ax2.set_xlabel("Simulation time interval (days)", fontsize = 20)
+    #     ax2.set_ylabel(prinames[i-1], fontsize = 20) 
+    #     i=i+1
 
 # Model performance - time       
 scenario2run = datetime.now()-start
