@@ -40,8 +40,7 @@ class g:
     debuglevel = 1 # level of debug prints - 1 as lowest ; 4 for most detailed
 
         
-    def __init__(self,in_res=5,in_inter_arrival=1,in_prob_pifu=0,in_path_horizon_y=3,audit_interval=7,in_reps=1,repid=1,savepath='temp',in_FOavoidable=0,in_interfu_perc=0.6):
-        
+        def __init__(self,in_res,in_inter_arrival,in_prob_pifu,in_path_horizon_y,audit_interval,in_FOavoidable,in_interfu_perc):
         self.prob_firstonly = 0.35 # % of rheumatology RTT patients have no follow-ups | Baseline: ~35% with no follow-ups
         self.number_of_runs=in_reps # no replications
         self.prob_pifu=in_prob_pifu # PIFU proportion - probability of PIFU pathway for non first-only pathways[%]
