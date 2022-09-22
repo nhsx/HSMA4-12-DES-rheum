@@ -17,7 +17,7 @@ import random
 random.seed(9001)
 
 scriptrun_flag = True # True to save each log line by line (more efficient)
-reps=2 # Number of model replications | Baseline: 30 replications
+reps=30 # Number of model replications | Baseline: 30 replications
 savepath = 'out_sand/'
 #savepath = 'bundleV2/out_central_15_pifu20_interpifu20/'
 #savepath = 'bundleV2/out_central_3_base/'
@@ -64,10 +64,13 @@ if scriptrun_flag:
     #in_interfu_perc = 0.6 # Percentage increase in inter-appointment interval with PIFU (vs traditional), i.e. 0.6 means 60% longer interval | Baseline: 0.6 | Scenarios: 0.6, 0.2
     in_interfu_perc = 0.2 #
     
-    g_defaults = rheum.g()
+    # g_defaults = rheum.g()
+   
     audit_interval = 28 # audit timepoint (in simulation days)
-    
-    cap  = 1/intarr * ((2 + in_path_horizon_y / g_defaults.mean_interOPA *365) * (1-g_defaults.prob_firstonly) + 2 * g_defaults.prob_firstonly)# * Heuristic of daily slots (365 days) needed to deal with steady-state model demand
+    mean_interOPA=np.round(4.5 * 365/12,0)
+    prob_firstonly=prob_firstonly = 0.35
+    cap  = 1/intarr * ((2 + in_path_horizon_y / mean_interOPA *365) * (1-prob_firstonly) + 2 * prob_firstonly)# * Heuristic of daily slots (365 days) needed to deal with steady-state model demand
+
     cap_diff = 0 # Increment or decrement in daily slots to be applied to the heuristic | Baseline: 0
     
     # Set up constructor instance
