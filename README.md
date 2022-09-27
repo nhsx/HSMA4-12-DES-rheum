@@ -19,14 +19,45 @@ As such, in this project we propose to use Discrete Event Simulation - where ind
 
 We focussed on rheumatology given that rheumatology has a good clinical evidence base on PIFU [5-10]; documented pathways [3,7]; PIFU is actively endorsed [3,4,7]; and that it is a mainly outpatient specialty with many chronic patients on long-term follow-up, meaning that the effect of PIFU may be amplified [3].
 
+
 ## Main model
 
 Can be run from `simpy_rheum_v004_run.py` in Python (spyder, VS Code). The main `simpy` model implementation is in `simpy_rheum_v004.py`. 
 
+An overview of the simplified pathway / process map, as employed in the DES `simpy` model, is shown below.
+
+![plot](./readme-figures/model_simplistic_diagram_overview.PNG)
+
+## Illustrative use case ("V3"), a stylistic trust
+
+As an example of the model in operation, we aimed to create a hypothetical baseline case for a fictitious trust with realistic parameters and assumptions.
+
+### Illustrative use case ("V3") - parameters
+
+We obtained parameter inputs from GIRFT guidance, NHS Digital, clinical data and publications to build a hypothetical baseline case for a fictitious trust with realistic parameters and assumptions, including reasonable resulting waiting list characteristics.
+
+We then applied what-if modelling to this baseline case based on PIFU or A&G interventions.
+
+Some details of parameters for the use case, both the baseline and what-if, can be found below (for full details within script and - upon request - via project report).
+
+![plot](./readme-figures/model_usecaseV3_parameters.PNG)
+
+![plot](./readme-figures/model_usecaseV3_whatifs.PNG)
+
+### Illustrative use case ("V3") - outputs
+
+Some outputs are shown below:
+
+![plot](./readme-figures/scenarios_RTT_q0.5.png)
+
+![plot](./readme-figures/scenarios_RTT_q05_dt.png)
+
+nb: `simpy` output logs themselves not uploaded to repo due to size. Can be regenerated with the code given (the current parameters are set to match scenario A above, for the use case "V3"). The plots were created upon post-processing of `simpy` logs of appointments and patients across simulated scenarios, with R script `80-postprocessing_plots.R`.
+
 ## Toy tool
 
 A toy interactive app leveraging streamlit is being worked on (to be updated with host location).
-In the meantime, the script can be found here `streamlit_model_mf_v0031_batch.py` for local machine deployment.
+In the meantime, the script can be found here `streamlit_model_mf_v0031_batch.py` for local machine deployment (see [here](https://www.youtube.com/watch?v=_PPUk__mXLI) for guidance)
 
 
 ### References
