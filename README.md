@@ -15,7 +15,7 @@ As such, in this project we propose to use Discrete Event Simulation - where ind
 
 ## Project objectives
 *	Use Discrete Event Simulation to better understand the role patient initiated follow-up (PIFU) can play in addressing the (outpatient and elective) referral-to-treatment (RTT) backlog, with particular emphasis on Rheumatology
-*	Advocate and demonstrate the value of pathway and behavioural modelling in central decision-making for digital pathway redesign, elective recovery and the LTP personalisation agenda to support better patient care, experience and system resilience
+*	Advocate and demonstrate the value of pathway and behavioural modelling in central and Integrated Care System decision-making for digital pathway redesign, elective recovery and the Long-Term Plan personalisation agenda and Public Health Management Agenda, to support better patient care, experience and system resilience
 
 We focussed on rheumatology given that rheumatology has a good clinical evidence base on PIFU [5-10]; documented pathways [3,7]; PIFU is actively endorsed [3,4,7]; and that it is a mainly outpatient specialty with many chronic patients on long-term follow-up, meaning that the effect of PIFU may be amplified [3].
 
@@ -27,6 +27,11 @@ Can be run from `simpy_rheum_v004_run.py` in Python (spyder, VS Code). The main 
 An overview of the simplified pathway / process map, as employed in the DES `simpy` model, is shown below.
 
 ![plot](./readme-figures/model_simplistic_diagram_overview.PNG)
+
+An intuition of the flow (with changed parameters to improve intuitiveness and clarity of visualisation), is given in the animated process map flow below.
+
+![plot](./readme-figures/process_map_viz_simpyflow_Villus.gif)
+
 
 ## Illustrative use case ("V3"), a stylistic trust
 
