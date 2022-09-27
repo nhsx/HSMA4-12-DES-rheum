@@ -45,9 +45,9 @@ We then applied what-if modelling to this baseline case based on PIFU or A&G int
 
 Some details of parameters for the use case, both the baseline and what-if, can be found below (for full details within script and - upon request - via project report).
 
-![plot - V3 parameters](./readme-figures/model_usecaseV3_parameters.PNG | width=100)
+![plot - V3 parameters](./readme-figures/model_usecaseV3_parameters.PNG)
 
-![plot - V3 what-if scenarios](./readme-figures/model_usecaseV3_whatifs.PNG | width=100)
+![plot - V3 what-if scenarios](./readme-figures/model_usecaseV3_whatifs.PNG)
 
 ### Illustrative use case ("V3") - outputs
 
