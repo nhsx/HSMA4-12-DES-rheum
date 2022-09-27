@@ -40,17 +40,19 @@ We then applied what-if modelling to this baseline case based on PIFU or A&G int
 
 Some details of parameters for the use case, both the baseline and what-if, can be found below (for full details within script and - upon request - via project report).
 
-![plot](./readme-figures/model_usecaseV3_parameters.PNG)
+![plot - V3 parameters](./readme-figures/model_usecaseV3_parameters.PNG | width=100)
 
-![plot](./readme-figures/model_usecaseV3_whatifs.PNG)
+![plot - V3 what-if scenarios](./readme-figures/model_usecaseV3_whatifs.PNG | width=100)
 
 ### Illustrative use case ("V3") - outputs
 
 Some outputs are shown below:
 
-![plot](./readme-figures/scenarios_RTT_q0.5.png)
+![plot of KPI median waiting time over the last observation year, for use case "V3". Baseline and what-if scenarios](./readme-figures/scenarios_RTT_q0.5.png)
 
-![plot](./readme-figures/scenarios_RTT_q05_dt.png)
+![plot of median waiting time over time (three year observation period), for use case "V3". Baseline and what-if scenarios](./readme-figures/scenarios_RTT_q05_dt.png)
+
+![plot of Waiting List size over time (three year observation period), for use case "V3". Baseline and what-if scenarios](./readme-figures/scenarios_RTT_WT_dt.png)
 
 nb: `simpy` output logs themselves not uploaded to repo due to size. Can be regenerated with the code given (the current parameters are set to match scenario A above, for the use case "V3"). The plots were created upon post-processing of `simpy` logs of appointments and patients across simulated scenarios, with R script `80-postprocessing_plots.R`.
 
