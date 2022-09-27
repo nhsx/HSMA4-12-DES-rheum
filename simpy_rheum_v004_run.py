@@ -17,15 +17,8 @@ import random
 random.seed(9001)
 
 scriptrun_flag = True # True to save each log line by line (more efficient)
-reps=2 # Number of model replications | Baseline: 30 replications
+reps=30 # Number of model replications | Baseline: 30 replications
 savepath = 'out_sand/'
-#savepath = 'bundleV2/out_central_15_pifu20_interpifu20/'
-#savepath = 'bundleV2/out_central_3_base/'
-#savepath = 'bundleV2/out_10years_rep3_base_capplus1_distexp/'
-#savepath = 'bundleV2/out_10years_rep1_base_capplus5_12mshock100/'
-##V1 vs V3 . V3 with 5+3 instead of 3+4 warm+obs. PIFU starts being offered at end of wamr-up to 'eligible at stock fup' patients not new 'stock new' patients.
-#savepath = 'bundleV3/out_central_rep30_pifu20_interpifu20/'
-#savepath = 'bundleV3_/out_central_rep30_pifu20_interpifu20/'
 start=datetime.now()
 file1 = savepath + 'patient_result2.csv'
 file2 = savepath + 'appt_result.csv'
@@ -56,13 +49,14 @@ if scriptrun_flag:
     intarr = 1/6 # Inter-arrival rate (in days) | Baseline: 1/6 days, i.e. 6 per day
     in_path_horizon_y=3 # Patient follow-up horizon, simplification on how long each non first-only pathway lasts (years) | Baseline: 3
     
+    #in_prob_pifu = 0
     in_prob_pifu = 0.2 # PIFU proportion - probability of PIFU pathway for non first-only pathways | Baseline: 0 | Scenarios: 0.1,0.2,0.3,0.5
     
     in_FOavoidable = 0 # A&G proportion - proportion of first-only pathways avoidable via A&G | Baseline: 0 | Scenario: 0.43
     #in_FOavoidable = 0.43
     
-    #in_interfu_perc = 0.6 # Percentage increase in inter-appointment interval with PIFU (vs traditional), i.e. 0.6 means 60% longer interval | Baseline: 0.6 | Scenarios: 0.6, 0.2
-    in_interfu_perc = 0.2 #
+    in_interfu_perc = 0.6 # Percentage increase in inter-appointment interval with PIFU (vs traditional), i.e. 0.6 means 60% longer interval | Baseline: 0.6 | Scenarios: 0.6, 0.2
+    #in_interfu_perc = 0.2 # More conservative. Used in scenario C
     
     g_defaults = rheum.g()
     audit_interval = 28 # audit timepoint (in simulation days)
