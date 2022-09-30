@@ -40,10 +40,9 @@ class g:
     debuglevel = 1 # level of debug prints - 1 as lowest ; 4 for most detailed
 
         
-    def __init__(self,in_res=5,in_inter_arrival=1,in_prob_pifu=0,in_path_horizon_y=3,audit_interval=7,in_reps=1,repid=1,savepath='temp',in_FOavoidable=0,in_interfu_perc=0.6):
-        
+        def __init__(self,in_res,in_inter_arrival,in_prob_pifu,in_path_horizon_y,audit_interval,in_FOavoidable,in_interfu_perc):
         self.prob_firstonly = 0.35 # % of rheumatology RTT patients have no follow-ups | Baseline: ~35% with no follow-ups
-        self.number_of_runs=in_reps # no replications
+       # self.number_of_runs=in_reps # no replications
         self.prob_pifu=in_prob_pifu # PIFU proportion - probability of PIFU pathway for non first-only pathways[%]
         self.wl_inter = in_inter_arrival # inter-arrival time [days]
         self.number_of_slots = in_res # number of daily slots [slots]
@@ -72,8 +71,8 @@ class g:
         self.unavail_freq_slot=5 # [days] Time window of availability
         self.unavail_nrslots = int(np.floor(in_res*1)) # [slots] No of slots unavailable during each unavail period. Baseline: 100% of slots unavailable
         
-        self.savepath = savepath # [string] Save path for outputs
-        self.repid = repid # [integer] Id of current replication (within batch)
+       # self.savepath = savepath # [string] Save path for outputs
+       # self.repid = repid # [integer] Id of current replication (within batch)
         self.loglinesave = True # if true saves each line to file, if false creates dataframe that stays in memory (former found to be more efficient)
         self.audit_time = []
         self.audit_interval = audit_interval # time step for audit metrics [simulation days]
@@ -199,11 +198,11 @@ class rheum_Model:
     # our resources (here appointment slot units (symbolycally 15 min), with capacity given by
     # the number stored in the g class)
 
-    def __init__(self, run_number, in_res=2 , in_inter_arrival=(365/4590), in_prob_pifu=0.6, in_path_horizon_y=3,audit_interval=1,repid=1, savepath='temp',in_FOavoidable=0,in_interfu_perc=0.6):
+    def __init__(self, run_number, in_res , in_inter_arrival, in_prob_pifu, in_path_horizon_y,audit_interval,repid, savepath,in_FOavoidable,in_interfu_perc):
         self.env = simpy.Environment() # instance of environment
 
-        self.g = g(in_res,in_inter_arrival,in_prob_pifu, in_path_horizon_y, audit_interval, repid = repid, in_FOavoidable = in_FOavoidable,in_interfu_perc=in_interfu_perc) # instance of global variables for this replication
-        
+        self.g = g(in_res,in_inter_arrival,in_prob_pifu, in_path_horizon_y, audit_interval, in_FOavoidable = in_FOavoidable,in_interfu_perc=in_interfu_perc) # instance of global variables for this replication
+        self.repid=repid
         self.patient_counter = 0 # patient counter instantiated to 0
         self.block_counter = 0 # block counter instantiated to 0 (to control that right no of unavailable slots are enforced)
         
@@ -381,8 +380,8 @@ class rheum_Model:
                     
     
                 # Line/list to add to appointment log held in memory (df) or saved (csv)         
-                patient.ls_appt_to_add = [patient.id, patient.ls_appt[-1],patient.priority,patient.apptype,patient.type,patient.q_time_fopa,start_q_fopa,patient.tradition_dna,self.g.repid]
-                patient.ls_patient_to_add = [patient.id , patient.q_time_fopa,999,self.g.repid] # deprecated
+                patient.ls_appt_to_add = [patient.id, patient.ls_appt[-1],patient.priority,patient.apptype,patient.type,patient.q_time_fopa,start_q_fopa,patient.tradition_dna,self.repid]
+                patient.ls_patient_to_add = [patient.id , patient.q_time_fopa,999,self.repid] # deprecated
                     
                 # Whether to save each log line or hold in memory by appending
                 if self.g.loglinesave:
@@ -463,7 +462,7 @@ class rheum_Model:
                          
                     
                     # Add to appointment log or save            
-                    patient.ls_appt_to_add = [patient.id, patient.ls_appt[-1],patient.priority,"Traditional",patient.type,patient.q_time_fuopa,start_q_fuopa,patient.tradition_dna,self.g.repid]                            
+                    patient.ls_appt_to_add = [patient.id, patient.ls_appt[-1],patient.priority,"Traditional",patient.type,patient.q_time_fuopa,start_q_fuopa,patient.tradition_dna,self.repid]                            
                     if self.g.loglinesave:                    
                         with open(self.savepath +"appt_result.csv", "a") as f:
                              writer = csv.writer(f, delimiter=",")
@@ -536,7 +535,7 @@ class rheum_Model:
                         
                             
                         # Add to appointment log or save            
-                        patient.ls_appt_to_add = [patient.id, patient.ls_appt[-1],patient.priority,"PIFU",patient.type,end_q_pifuopa - start_q_pifuopa,start_q_pifuopa,patient.pifu_dna,self.g.repid]                            
+                        patient.ls_appt_to_add = [patient.id, patient.ls_appt[-1],patient.priority,"PIFU",patient.type,end_q_pifuopa - start_q_pifuopa,start_q_pifuopa,patient.pifu_dna,self.repid]                            
                         if self.g.loglinesave:                    
                             with open(self.savepath +"appt_result.csv", "a") as f:
                                  writer = csv.writer(f, delimiter=",")
@@ -587,7 +586,7 @@ class rheum_Model:
         self.g.results['resources occupied'] = (
             self.g.audit_resources_used)
         
-        self.g.results['rep']=self.g.repid
+        self.g.results['rep']=self.repid
 
 
     def calculate_mean_q_time(self):
@@ -781,7 +780,7 @@ class rheum_Model:
       
             ## alternative with save to file                        
             if self.g.loglinesave:
-                ls_audit_to_add = [self.env.now, len(FOPA_Patient.all_patients), self.g.patients_waiting, self.g.patients_waiting_by_priority[0], self.g.patients_waiting_by_priority[1], self.g.patients_waiting_by_priority[2],self.consultant.count,self.g.repid]                                               
+                ls_audit_to_add = [self.env.now, len(FOPA_Patient.all_patients), self.g.patients_waiting, self.g.patients_waiting_by_priority[0], self.g.patients_waiting_by_priority[1], self.g.patients_waiting_by_priority[2],self.consultant.count,self.repid]                                               
                 with open(self.savepath +"batch_mon_audit_ls.csv", "a") as f:
                      writer = csv.writer(f, delimiter=",")
                      writer.writerow(ls_audit_to_add)
@@ -832,7 +831,7 @@ class rheum_Model:
         # Load Results log - audit
         if self.g.loglinesave:
             self.g.results = pd.read_csv(self.savepath + "batch_mon_audit_ls.csv") # read from csv
-            self.g.results = (self.g.results[self.g.results['rep'] == self.g.repid])
+            self.g.results = (self.g.results[self.g.results['rep'] == self.repid])
         else:
             self.build_audit_results() # assemple from lists in memory
         
