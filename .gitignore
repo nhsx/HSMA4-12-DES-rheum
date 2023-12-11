@@ -38,6 +38,7 @@ src/temp_files
 .direnv
 .envrc
 venvpa/
+venvpa_req/
 
 ### Django ###
 *.log
@@ -932,3 +933,4 @@ FodyWeavers.xsd
 ### NOT to be ignored
 !parameters/Nov22d0_C22/*.xlsx
 debug_toerase.ipynb
+src/simpy_rheum_v004_notebook_mod.ipynb
