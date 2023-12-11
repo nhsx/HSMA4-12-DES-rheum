@@ -960,12 +960,14 @@ class Batch_rheum_model:
     def plot_monappKPI_reps(self,step=365/4):
         
         batch_mon_appointments = self.batch_mon_appointments.copy()
-        
+
         batch_mon_appointments['end_q'] = batch_mon_appointments['start_q']+batch_mon_appointments['q_time']
         
         batch_mon_appointments['interval'] = (batch_mon_appointments['end_q']//step)*step
         
-        batch_mon_app_kpit = batch_mon_appointments.groupby(['rep','priority','interval']).quantile([0.50]).reset_index()
+        batch_mon_appointments = batch_mon_appointments[['rep','priority','interval','q_time']] # mfadd 11/12/2023
+
+        batch_mon_app_kpit = batch_mon_appointments.groupby(['rep','priority','interval']).quantile([0.50],numeric_only=True).reset_index()
         
         batch_mon_app_kpitmu =batch_mon_appointments
         batch_mon_app_kpitmu['level_3']='mean'
