@@ -102,8 +102,15 @@ If using the Python notebook, use ```pip install ipykernel``` and select the int
 
 #### Via a Toy Tool (Streamlit)
 
-A prototype toy interactive app leveraging streamlit was also worked on in Streamlit (to be updated with host location).
-In the meantime, the script can be found here `streamlit_model_mf_v0031_batch.py` for local machine deployment (see [here](https://www.youtube.com/watch?v=_PPUk__mXLI) for guidance)
+A prototype toy interactive app leveraging streamlit was also worked on in Streamlit.
+
+For local machine deployment: the script can be found here `streamlit_model_mf_v0031_batch.py`.
+
+Overview instructions:
+- Navigate to code folder in terminal / powershell by typing `cd src` .
+- Type in terminal / powershell `streamlit run streamlit_model_mf_v0031_batch.py`.
+
+Detailed instructions: see [this tutorial](https://www.youtube.com/watch?v=_PPUk__mXLI) for guidance.
 
 ### Post-processing scripts
 
