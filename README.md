@@ -10,7 +10,7 @@
 
 **Title:** "The role of Patient Initiated Follow-Up and 'Digital Outpatients' in supporting the elective recovery"
 
-**Period:** January-July 2023
+**Period:** January-July 2022
 
 **HSMA4 project members:** Martina Fonseca and Xiaochen Ge, NHS England
 
