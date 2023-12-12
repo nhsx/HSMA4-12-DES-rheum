@@ -1,2 +1,2 @@
 [MESSAGES CONTROL]
-disable= wildcard-import,method-hidden,too-many-lines
+disable=wildcard-import,method-hidden,too-many-lines

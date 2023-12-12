@@ -25,7 +25,7 @@ from src.helpers import mean_confidence_interval
 from src.initialisers import g
 #from src.patient import FOPA_Patient
 from src.rheum_Model import rheum_Model
-      
+
 class Batch_rheum_model:
     """ Class for Batch runs / replications of the model """
 
@@ -49,34 +49,34 @@ class Batch_rheum_model:
         self.batch_kpi = pd.DataFrame()
         self.savepath=in_savepath
         self.g = g(in_res,in_inter_arrival,in_prob_pifu, in_path_horizon_y, audit_interval,in_FOavoidable=in_FOavoidable,in_interfu_perc=in_interfu_perc) # instance of global variables
-    
-    
+
+
     def read_logs_to_self(self):
         """Method to read csv results to constructor instance dataframe"""        
         # Read in results back into self dataframe
         self.trial_results_df = pd.read_csv(self.savepath +"patient_result2.csv")
         self.batch_mon_appointments = pd.read_csv(self.savepath +"appt_result.csv")
         self.batch_mon_audit = pd.read_csv(self.savepath + "batch_mon_audit_ls.csv")
-    
-    
+
+
     def plot_audit_reps(self):
         """ Plotting an overview of behaviour at audit timepoints (across reps) """
         t_warm = self.g.warm_duration
-        
+
         fig_q = plt.figure(figsize=(12,12))
         sns.violinplot(x='type',y='q_time',data=self.batch_mon_appointments[self.batch_mon_appointments['start_q']>t_warm],hue='type')
 
 
         # Other plot
         #fig_q2 = plt.figure(figsize=(12,12))
-        #sns.boxplot(x='time',y='priority 1 patients waiting',data=self.batch_mon_audit)  
+        #sns.boxplot(x='time',y='priority 1 patients waiting',data=self.batch_mon_audit)
 
         # Audit plot
         audit_kpis = ['priority 3 patients waiting','priority 1 patients waiting','priority 2 patients waiting','resources occupied']
         pricolors = ['orange','skyblue','green','gray']
         audit_kpis_name = ['RTT appointment waits','Traditional appointment waits','PIFU appointment waits','Resources (slots) occupied']
         batch_mon_audit_melted = pd.melt(self.batch_mon_audit,id_vars=['time','rep'],value_vars=audit_kpis,var_name='audit_KPI')
-              
+
         fig, axes = plt.subplots(len(audit_kpis),1, figsize=(20, 20), sharey=False)
         #fig.suptitle('Audit point KPIs')        
         i=0
@@ -87,7 +87,6 @@ class Batch_rheum_model:
                 ax.set_xlabel("Audit timepoint (days)", fontsize = 20)
             ax.set_ylabel(audit_kpis_name[i], fontsize = 20)
             i+=1
-            
         return fig, fig_q
     
 
