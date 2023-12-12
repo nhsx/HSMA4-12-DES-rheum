@@ -1,10 +1,10 @@
+""" Module includes rheumatology patient class."""
 import random
 import pandas as pd
-import numpy as np
+# import numpy as np
 
-# Class representing our RTT patients entering the secondary care rheumatology pathway.
 class FOPA_Patient:
-
+    """Class representing our RTT patients entering the secondary care rheumatology pathway."""
     # The following dictionaries store patients
     all_patients = {}
 
@@ -65,14 +65,14 @@ class FOPA_Patient:
             self.apptype = "First-only"
             self.max_fuopa_tenor = 0 # no follow-ups
         else:
-           self.type = "First" # first leading to long-term follow-up
-           self.apptype = "First"
-    
+            self.type = "First" # first leading to long-term follow-up
+            self.apptype = "First"
+
     def decision_DNA_pifu(self):
         """Method to decide and assign at random DNA fate of appointment (PIFU)"""
         if  random.random() < self.DNA_pifu_pro:
             self.pifu_dna = True
-    
+
     def decision_DNA_tradtion(self):
         """Method to decide and assign at random DNA faith of appointment (first ; traditional)"""
         if  random.random() < self.DNA_tra_pro:
