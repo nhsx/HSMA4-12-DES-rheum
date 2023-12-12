@@ -21,7 +21,7 @@ def mean_confidence_interval(data, confidence=0.95):
 
 class patient_blocker:
     """ Initialise a patient_blocker class (ghost patients that will block slots from actual patients, to emulate varying capacity and opening hours)."""
-    def __init__(self,blockerid):        
+    def __init__(self,blockerid):
         self.blockerid = blockerid
 
 
@@ -36,12 +36,12 @@ def Trial_Results_initiate(file1,file2,file3):
     # Create a file to store trial results, and write the column headers
     with open(file1, "w") as f:
         writer = csv.writer(f, delimiter=",")
-        column_headers = ["P_ID", "Q_time_fopa" , "Q_time_fuopa" , "rep"      
+        column_headers = ["P_ID", "Q_time_fopa" , "Q_time_fuopa" , "rep"
                         ]
         writer.writerow(column_headers)
     with open(file2, "w") as f:
         writer = csv.writer(f, delimiter=",")
-        column_headers = ["P_ID", "Appt_ID","priority","type","pathway","q_time","start_q","DNA" , "rep"                   
+        column_headers = ["P_ID", "Appt_ID","priority","type","pathway","q_time","start_q","DNA" , "rep"
                         ]
         writer.writerow(column_headers)
         
