@@ -67,8 +67,7 @@ Search and install.
 - Search and install.
 
 #### 4. Getting the code on your PC
-- Visit: [https://github.com/nhsengland/pathway-analyse](https://github.com/nhsx/HSMA4-12-DES-rheum/) 
-
+- Visit: [https://github.com/nhsx/HSMA4-12-DES-rheum/](https://github.com/nhsx/HSMA4-12-DES-rheum/) 
 - click the *<>Code* button and click *Open with GitHub Desktop*
 - click the *Clone* button to save/clone the code.
 - click *Current Repository*, select *HSMA4-12-DES-rheum* and right-click on the mouse/trackpad and select *Open in Visual Studio Code*; this will open VSCode on a separate window.
