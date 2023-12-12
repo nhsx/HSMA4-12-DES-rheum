@@ -1,7 +1,7 @@
 #!/usr/bin/env python3
 # -*- coding: utf-8 -*-
 # v0.01
-# Last changed: 25/02/2022
+# Last changed: 11/12/2023
 # Pathway: rheumatology
 # refactor with day steps and slots per day - try something more like https://qualitysafety.bmj.com/content/qhc/23/5/373.full.pdf
 
