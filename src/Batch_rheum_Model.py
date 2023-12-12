@@ -26,13 +26,23 @@ from src.initialisers import g
 from src.rheum_Model import rheum_Model
 
        
-
-# Class for Batch runs / replications of the model
 class Batch_rheum_model:
-    
-    # Initialise Class for Batch run model. Instantiate g.
+    """ Class for Batch runs / replications of the model """
+
     def __init__(self,in_res=5 , in_inter_arrival=1, in_prob_pifu=0.6, in_path_horizon_y=3,audit_interval=7,in_savepath="temp/",in_FOavoidable=0,in_interfu_perc=0.6):
-        
+        """# Initialise Class for Batch run model. Instantiate g.
+
+        Args:
+            in_res (int, optional): The number of daily slots [slots]. Defaults to 5.
+            in_inter_arrival (int, optional): The inter-arrival time [days]. Defaults to 1.
+            in_prob_pifu (float, optional): PIFU proportion - probability of PIFU pathway for non first-only pathways[%]. Defaults to 0.6.
+            in_path_horizon_y (int, optional): Patient follow-up horizon [years], simplification on how long each non first-only pathway lasts (years). Defaults to 3.
+            audit_interval (int, optional): Time step for audit metrics [simulation days]. Defaults to 7.
+            in_savepath (str, optional): Save path for outputs. Defaults to "temp/".
+            in_FOavoidable (int, optional): A&G proportion - proportion of first-only pathways avoidable via A&G [%]. Defaults to 0.
+            in_interfu_perc (float, optional): Percentage increase in inter-appointment interval with PIFU (vs traditional), i.e. 0.6 means 60% longer interval. Defaults to 0.6.
+        """
+
         self.batch_mon_appointments = pd.DataFrame()
         self.batch_mon_audit = pd.DataFrame()
         self.batch_mon_app_kpit = pd.DataFrame()
@@ -41,16 +51,16 @@ class Batch_rheum_model:
         self.g = g(in_res,in_inter_arrival,in_prob_pifu, in_path_horizon_y, audit_interval,in_FOavoidable=in_FOavoidable,in_interfu_perc=in_interfu_perc) # instance of global variables
         
     
-    # Method to read csv results to constructor instance dataframe
-    def read_logs_to_self(self):        
+    def read_logs_to_self(self):
+        """Method to read csv results to constructor instance dataframe"""        
         # Read in results back into self dataframe
         self.trial_results_df = pd.read_csv(self.savepath +"patient_result2.csv")
         self.batch_mon_appointments = pd.read_csv(self.savepath +"appt_result.csv")
         self.batch_mon_audit = pd.read_csv(self.savepath + "batch_mon_audit_ls.csv")
     
-    
-    # Plotting an overview of behaviour at audit timepoints (across reps)    
+       
     def plot_audit_reps(self):
+        """ Plotting an overview of behaviour at audit timepoints (across reps) """
         
         t_warm = self.g.warm_duration
         
@@ -81,9 +91,9 @@ class Batch_rheum_model:
             
         return fig, fig_q
     
-    # Computing headline/core KPIs on queuing time, resources and waiting list size (batch / inter-replication)
+
     def headline_KPI(self,window_tail=365):
-        
+        """Computing headline/core KPIs on queuing time, resources and waiting list size (batch / inter-replication)."""
 
         max_time = self.g.warm_duration +  self.g.obs_duration
         batch_mon_appointments = self.batch_mon_appointments.copy()
@@ -102,14 +112,12 @@ class Batch_rheum_model:
         batch_KPIs_n=  batch_KPIs[['rep','q_time']].groupby(['rep']).size().reset_index()
         batch_KPIs_n=batch_KPIs_n.rename(columns={0:'value'})
         batch_KPIs_n['KPI']='RTT_n'
-        
-        
+               
         batch_mon_audit = self.batch_mon_audit.copy()
         batch_KPIs_wl = batch_mon_audit[batch_mon_audit['time']==max(batch_mon_audit['time'])].rename(columns={'priority 3 patients waiting':'RTT_WL_end'})
         batch_KPIs_wl= batch_KPIs_wl[['rep','RTT_WL_end','resources occupied']]
         batch_KPIs_wl = pd.melt(batch_KPIs_wl,id_vars=['rep'],var_name='KPI')
-        
-        
+                
         batch_kpi_rep = pd.concat([batch_KPIs_q,batch_KPIs_mu,batch_KPIs_n,batch_KPIs_wl])
         
         a = batch_kpi_rep.groupby(['KPI']).agg({'value': lambda x: mean_confidence_interval(x)[0]}).rename(columns={'value':'KPI_mean'})
@@ -123,29 +131,36 @@ class Batch_rheum_model:
         return batch_kpi
 
                 
-    
-    # Plotting an overview of queueing time appointment KPI behaviour (across reps and by time intervals)
+
     def plot_monappKPI_reps(self,step=365/4):
+        """# Plotting an overview of queueing time appointment KPI behaviour (across reps and by time intervals).
+
+        Args:
+            step (_double_, optional): The timestep in days by which to aggregate temporal KPIs by. Defaults to 365/4.
+
+        Returns:
+            _type_: Two figure objects
+        """
         
         batch_mon_appointments = self.batch_mon_appointments.copy()
 
-        batch_mon_appointments['end_q'] = batch_mon_appointments['start_q']+batch_mon_appointments['q_time']
+        batch_mon_appointments['end_q'] = batch_mon_appointments['start_q']+batch_mon_appointments['q_time'] # when queueing ended
         
-        batch_mon_appointments['interval'] = (batch_mon_appointments['end_q']//step)*step
+        batch_mon_appointments['interval'] = (batch_mon_appointments['end_q']//step)*step # which timestep (bucket) this belongs to
         
         batch_mon_appointments = batch_mon_appointments[['rep','priority','interval','q_time']] # mfadd 11/12/2023
 
-        batch_mon_app_kpit = batch_mon_appointments.groupby(['rep','priority','interval']).quantile([0.50],numeric_only=True).reset_index()
+        batch_mon_app_kpit = batch_mon_appointments.groupby(['rep','priority','interval']).quantile([0.50],numeric_only=True).reset_index() # compute median
         
         batch_mon_app_kpitmu =batch_mon_appointments
         batch_mon_app_kpitmu['level_3']='mean'
-        batch_mon_app_kpitmu = batch_mon_appointments.groupby(['rep','priority','interval','level_3']).mean().reset_index()
+        batch_mon_app_kpitmu = batch_mon_appointments.groupby(['rep','priority','interval','level_3']).mean().reset_index() # compute mean
                 
         batch_mon_app_kpit = pd.concat([batch_mon_app_kpit,batch_mon_app_kpitmu])
         
         batch_mon_app_kpit = batch_mon_app_kpit.rename(columns={'level_3':'KPI'})
         
-        batch_mon_app_kpiseen = batch_mon_appointments.groupby(['rep','priority','interval']).size().reset_index(name='q_time')
+        batch_mon_app_kpiseen = batch_mon_appointments.groupby(['rep','priority','interval']).size().reset_index(name='q_time') # compute patient count
         batch_mon_app_kpiseen['KPI']='Seen'
         batch_mon_app_kpit = pd.concat([batch_mon_app_kpit,batch_mon_app_kpiseen])
         
@@ -193,8 +208,15 @@ class Batch_rheum_model:
         return fig, fig2
         
     
-    # Method to run replications. Calls run method
     def run_reps(self,reps):
+        """  Method to run replications. Calls run method of rheum_Model
+
+        Args:
+            reps (_integer_): Number of replications
+
+        Returns:
+            _type_: various outputs for streamlit . Others saved to file or kept in self of Class instance.
+        """
         
         for run in range(reps):
             
@@ -248,9 +270,10 @@ class Batch_rheum_model:
         self.headline_KPI(365) # generate core/headline KPIs
         
         return fig_audit_reps, chart_output_lastrep, text_output_lastrep, quant_output_lastrep, fig_q_audit_reps, fig_monappKPI_reps, fig_monappKPIn_reps
-        
-    # Save aggregate logs (cross-replication)    
+          
+
     def save_logs(self):
+        """  Save aggregate logs (cross-replication)  """
         
        self.batch_mon_appointments.to_csv(self.savepath + 'batch_mon_appointments.csv')
        self.batch_mon_audit.to_csv(self.savepath + 'batch_mon_audit.csv')

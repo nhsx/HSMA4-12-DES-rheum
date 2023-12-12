@@ -13,14 +13,30 @@ from src.helpers import patient_blocker
 from src.initialisers import g
 
 
-# Class representing our overall model of the rheumatology outpatient clinic
 class rheum_Model:
+    """Class representing our overall model of the rheumatology outpatient clinic.
+
     # Here, the constructor sets up the SimPy environment, sets a patient
     # counter to 0 (which we'll use for assigning patient IDs), and sets up
     # our resources (here appointment slot units (symbolycally 15 min), with capacity given by
     # the number stored in the g class)
+    """
 
     def __init__(self, run_number, in_res=2 , in_inter_arrival=(365/4590), in_prob_pifu=0.6, in_path_horizon_y=3,audit_interval=1,repid=1, savepath='temp',in_FOavoidable=0,in_interfu_perc=0.6):
+        """Initialise rhematology outpatient clinic model.
+
+        Args:
+            run_number (_type_): The present run number.
+            in_res (int, optional): The number of daily slots [slots]. Defaults to 2.
+            in_inter_arrival (tuple, optional): The inter-arrival time [days]. Defaults to (365/4590).
+            in_prob_pifu (float, optional): PIFU proportion - probability of PIFU pathway for non first-only pathways[%]. Defaults to 0.6.
+            in_path_horizon_y (int, optional): Patient follow-up horizon [years], simplification on how long each non first-only pathway lasts (years). Defaults to 3.
+            audit_interval (int, optional): Time step for audit metrics [simulation days]. Defaults to 1.
+            repid (int, optional): id of current replication (within batch). Defaults to 1.
+            savepath (str, optional): Save path for outputs. Defaults to 'temp'.
+            in_FOavoidable (float, optional): A&G proportion - proportion of first-only pathways avoidable via A&G [%]. Defaults to 0.
+            in_interfu_perc (float, optional): Percentage increase in inter-appointment interval with PIFU (vs traditional), i.e. 0.6 means 60% longer interval. Defaults to 0.6.
+        """
         self.env = simpy.Environment() # instance of environment
 
         self.g = g(in_res,in_inter_arrival,in_prob_pifu, in_path_horizon_y, audit_interval, repid = repid, in_FOavoidable = in_FOavoidable,in_interfu_perc=in_interfu_perc) # instance of global variables for this replication
@@ -40,8 +56,9 @@ class rheum_Model:
         self.results_df["Q_Time_fuopa"] = [] # [running but deprecated]
         self.results_df.set_index("P_ID", inplace=True) # [running but deprecated]
         
-    # A method that generates patients arriving for the RTT outpatient 'clinic'
     def generate_wl_arrivals(self):
+        """A method that generates patients arriving for the RTT outpatient 'clinic'"""
+
         # Keep generating indefinitely (until the simulation ends)
         while True:
             # Increment the patient counter by 1
@@ -68,9 +85,16 @@ class rheum_Model:
             yield self.env.timeout(sampled_interarrival)
 
 
-    
-    # A method to obstruct a single slot
     def obstruct_slot(self,patient_blocker,unavail_timeperiod):
+        """  A method to obstruct a single slot (emulate unavailability)
+
+        Args:
+            patient_blocker (_class_): An instantiated patient_blocker class (to "compete" with FOPA_Patient for slots)
+            unavail_timeperiod (_type_): Time that the slot is obstructed.
+
+        Yields:
+            _type_: A given timed out period where the slot is unavailable
+        """
             
         # Once this time has elapsed, request a slot wiyh priority
         # of -1 (so that we know this will get the top priority, as none
@@ -82,9 +106,9 @@ class rheum_Model:
             yield req
             
             yield self.env.timeout(unavail_timeperiod)
-                
-    # A method to obstruct multiple slots            
+                            
     def obstruct_slots(self):
+        """ A method to obstruct multiple slots (emulate unavailability)"""
         
         # If unavailability is single shock period
         if self.g.unavail_byshock:
@@ -126,10 +150,14 @@ class rheum_Model:
                 # Freeze the function for the time period during which no unavailability
                 yield self.env.timeout(self.g.unavail_freq_slot)
                 
-            
-    # A method that models the processes / RTT patient pathway for attending the outpatient rheumatology clinic.
-    # The method needs to be passed an RTT patient who will go through these processes
     def attend_OPA(self, patient):
+        """    A method that models the processes / RTT patient pathway for attending the outpatient rheumatology clinic.
+        
+        The method needs to be passed an RTT patient who will go through these processes
+
+        Args:
+            patient (_FOPA_Patient class_): An instantiated object of class FOPA_Patient
+        """
                         
         patient.assign_firstonly(self.g.prob_firstonly) # Assign whether first-only pathway       
         patient.sub_RTT_priority() # add some variability to priority within RTT queue (increment to its '3' priority)        
@@ -432,8 +460,8 @@ class rheum_Model:
             writer.writerow(results_to_write)
     
 
-    """ Plot results relevant to one run """
     def chart(self):
+        """ Plot results relevant to one run """
         # plot results at end of run #
         self.results_df = self.results_df.sort_index()
         #self.g.appt_queuing_results = self.g.appt_queuing_results.sort_values(by=['start_q'])
@@ -556,8 +584,8 @@ class rheum_Model:
         # return fig
         return fig
 
-    """ single run summaries for streamlit (quartiles) - NEED CHECKING, NOT RUNNING AS SHOULD """
     def summarise(self):
+          """ single run summaries for streamlit (quartiles) - NEED CHECKING, NOT RUNNING AS SHOULD """
         """Produces displayed text summary of model run"""
         
         self.g.appt_queuing_results['priority']=pd.to_numeric(self.g.appt_queuing_results['priority'])
@@ -583,8 +611,7 @@ class rheum_Model:
         return text, quant
 
     def perform_audit(self):
-        """Monitors modelled system at regular intervals (as defined by audit 
-        interval in self.g)"""
+        """Monitors modelled system at regular intervals (as defined by audit interval in self.g)"""
 
         # Delay before first aurdit if length of warm-up
         yield self.env.timeout(self.g.warm_duration)
@@ -630,19 +657,32 @@ class rheum_Model:
             yield self.env.timeout(self.g.audit_interval)
 
 
-    # The run method starts up the entity generators, and tells SimPy to start
-    # running the environment for the duration specified in the g class. After
-    # the simulation has run, it calls the methods that calculate run
-    # results, and the method that writes these results to file
     def run(self,repid=1):
+        """  Run method to do a single run of the model.
         
-        
+        The run method starts up the entity generators, and tells SimPy to start
+        running the environment for the duration specified in the g class. After
+        the simulation has run, it calls the methods that calculate run
+        results, and the method that writes these results to file
+
+        Args:
+            repid (int, optional): The replication id. Defaults to 1.
+
+        Returns:
+            chart_output: Chart output for streamlit
+            text_output: Text output for streamlit
+            quant_output: KPI output for streamlit
+            Other outputs are stored within object (self) rather than returned.
+        """
+              
         # Start processes: entity generators and audit
         self.env.process(self.generate_wl_arrivals())
         
+        # Check for unavailable feature use or not. If so, create slot obstructor generator.
         if self.g.unavail_on:
             self.env.process(self.obstruct_slots())
         
+        # Generator to perform audit at fixed intervals
         self.env.process(self.perform_audit())
         
         # Run simulation

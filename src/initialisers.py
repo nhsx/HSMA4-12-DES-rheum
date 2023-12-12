@@ -1,9 +1,12 @@
 import pandas as pd
 import numpy as np
 
-# Class to store global parameter values.  Not used optimally - should be revisited. Currently code creates instances per replication,
-# should likely be global
+
 class g:
+    """ Class to store global parameter values.
+    
+    Not used optimally - should be revisited. Currently code creates instances per replication, should likely be global
+    """
     mean_interOPA = np.round(4.5 * 365/12,0) # mean days inbetween appointments (traditional pathway) - exponential distribution
     interOPA_tri = np.round(np.array([3,6,4.5])*365/12) # days inbetween appointments (traditional pathway) - low, high , mode for triangular distribution
     t_decision = 1 * 365 # days, time mark for pathway PIFU decision / stratification (from first OPA appointment)
@@ -14,7 +17,8 @@ class g:
 
         
     def __init__(self,in_res=5,in_inter_arrival=1,in_prob_pifu=0,in_path_horizon_y=3,audit_interval=7,in_reps=1,repid=1,savepath='temp',in_FOavoidable=0,in_interfu_perc=0.6):
-        
+        """ Initialise global parameter values."""
+
         self.prob_firstonly = 0.35 # % of rheumatology RTT patients have no follow-ups | Baseline: ~35% with no follow-ups
         self.number_of_runs=in_reps # no replications
         self.prob_pifu=in_prob_pifu # PIFU proportion - probability of PIFU pathway for non first-only pathways[%]
@@ -63,32 +67,9 @@ class g:
             columns=['P_ID','App_ID','priority','type',"pathway",'q_time','start_q','DNA'])) # populated in pathway (FOPA_Patiet)
         self.appt_queuing_results.set_index("App_ID", inplace=True) # reset index
     
-    # Change number of replications
+    
     def change_reps(self,reps):
+        """ Change number of replications for batch run """
         self.number_of_runs = reps
 
 
-# Method to create files that will hold logs - RTT patient (1), appointment (2), audit (3)
-def Trial_Results_initiate(file1,file2,file3):
-    
-    # Create a file to store trial results, and write the column headers
-        with open(file1, "w") as f:
-            writer = csv.writer(f, delimiter=",")
-            column_headers = ["P_ID", "Q_time_fopa" , "Q_time_fuopa" , "rep"      
-                           ]
-            writer.writerow(column_headers)
-        with open(file2, "w") as f:
-            writer = csv.writer(f, delimiter=",")
-            column_headers = ["P_ID", "Appt_ID","priority","type","pathway","q_time","start_q","DNA" , "rep"                   
-                           ]
-            writer.writerow(column_headers)
-            
-        with open(file3,"w") as f:
-            writer = csv.writer(f, delimiter=",")
-            column_headers = ['time','patients in system','all patients waiting','priority 1 patients waiting','priority 2 patients waiting','priority 3 patients waiting','resources occupied','rep']
-            writer.writerow(column_headers)
-            
-        # with open(file4,"w") as f:
-        #     writer = csv.writer(f, delimiter=",")
-        #     column_headers = ['KPI','KPI_mean','KPI_LCI','KPI_UCI']
-        #     writer.writerow(column_headers)
