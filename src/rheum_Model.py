@@ -586,27 +586,26 @@ class rheum_Model:
 
     def summarise(self):
           """ single run summaries for streamlit (quartiles) - NEED CHECKING, NOT RUNNING AS SHOULD """
-        """Produces displayed text summary of model run"""
-        
-        self.g.appt_queuing_results['priority']=pd.to_numeric(self.g.appt_queuing_results['priority'])
-        self.g.appt_queuing_results['q_time']=pd.to_numeric(self.g.appt_queuing_results['q_time'])
-        
-        # Put text in string to return
-        text = []
-        text.append('APPOINTMENT-CENTERED METRICS:')
-        text.append ('Lower quartile time in system by priority:')
-        quant=self.g.appt_queuing_results[['priority','q_time']].groupby('priority').quantile(0.25)
-        
-        text.append (self.g.appt_queuing_results[['priority','q_time']].convert_dtypes().groupby('priority').quantile(0.25))
-        text.append ('Median time in system by priority:')
-        text.append (self.g.appt_queuing_results[['priority','q_time']].groupby('priority').quantile(0.50))
-        text.append ('Upper quartile time in system by priority:')
-        text.append (self.g.appt_queuing_results[['priority','q_time']].groupby('priority').quantile(0.75))
-        text.append ('Maximum time in system by priority:')
-        text.append (self.g.appt_queuing_results[['priority','q_time']].groupby('priority').quantile(1))
-        text.append('---')
-        text.append ('SYSTEM-CENTRED METRICS - audit points:')
-        text.append (self.g.results.describe().drop('time', axis=1))
+          """Produces displayed text summary of model run"""
+          
+          self.g.appt_queuing_results['priority']=pd.to_numeric(self.g.appt_queuing_results['priority'])
+          self.g.appt_queuing_results['q_time']=pd.to_numeric(self.g.appt_queuing_results['q_time'])
+          # Put text in string to return
+          text = []
+          text.append('APPOINTMENT-CENTERED METRICS:')
+          text.append ('Lower quartile time in system by priority:')
+          quant=self.g.appt_queuing_results[['priority','q_time']].groupby('priority').quantile(0.25)
+            
+          text.append (self.g.appt_queuing_results[['priority','q_time']].convert_dtypes().groupby('priority').quantile(0.25))
+          text.append ('Median time in system by priority:')
+          text.append (self.g.appt_queuing_results[['priority','q_time']].groupby('priority').quantile(0.50))
+          text.append ('Upper quartile time in system by priority:')
+          text.append (self.g.appt_queuing_results[['priority','q_time']].groupby('priority').quantile(0.75))
+          text.append ('Maximum time in system by priority:')
+          text.append (self.g.appt_queuing_results[['priority','q_time']].groupby('priority').quantile(1))
+          text.append('---')
+          text.append ('SYSTEM-CENTRED METRICS - audit points:')
+          text.append (self.g.results.describe().drop('time', axis=1))
 
         return text, quant
 

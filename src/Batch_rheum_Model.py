@@ -275,10 +275,10 @@ class Batch_rheum_model:
     def save_logs(self):
         """  Save aggregate logs (cross-replication)  """
         
-       self.batch_mon_appointments.to_csv(self.savepath + 'batch_mon_appointments.csv')
-       self.batch_mon_audit.to_csv(self.savepath + 'batch_mon_audit.csv')
-       self.batch_mon_app_kpit.to_csv(self.savepath + 'batch_mon_app_kpit.csv')
-       self.batch_kpi.to_csv(self.savepath + 'batch_kpi.csv')
+        self.batch_mon_appointments.to_csv(self.savepath + 'batch_mon_appointments.csv')
+        self.batch_mon_audit.to_csv(self.savepath + 'batch_mon_audit.csv')
+        self.batch_mon_app_kpit.to_csv(self.savepath + 'batch_mon_app_kpit.csv')
+        self.batch_kpi.to_csv(self.savepath + 'batch_kpi.csv')
         #my_batch_model.plot_monappKPI_reps(step=28*2)
 
 

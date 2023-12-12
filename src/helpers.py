@@ -12,11 +12,11 @@ def mean_confidence_interval(data, confidence=0.95):
     Returns:
         _type_: The mean, the lower bound and the upper bound of the confidence interval.
     """
-            a = 1.0 * np.array(data)
-            n = len(a)
-            m, se = np.mean(a), st.sem(a)
-            h = se * st.t.ppf((1 + confidence) / 2., n-1)
-            return m, m-h, m+h
+    a = 1.0 * np.array(data)
+    n = len(a)
+    m, se = np.mean(a), st.sem(a)
+    h = se * st.t.ppf((1 + confidence) / 2., n-1)
+    return m, m-h, m+h
 
 
 class patient_blocker:
