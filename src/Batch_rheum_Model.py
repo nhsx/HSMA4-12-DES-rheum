@@ -3,7 +3,8 @@
 # v0.01
 # Last changed: 11/12/2023
 # Pathway: rheumatology
-# refactor with day steps and slots per day - try something more like https://qualitysafety.bmj.com/content/qhc/23/5/373.full.pdf
+# refactor with day steps and slots per day
+# try something more like https://qualitysafety.bmj.com/content/qhc/23/5/373.full.pdf
 
 # Time unit: day
 
@@ -24,8 +25,7 @@ from src.helpers import mean_confidence_interval
 from src.initialisers import g
 #from src.patient import FOPA_Patient
 from src.rheum_Model import rheum_Model
-
-       
+      
 class Batch_rheum_model:
     """ Class for Batch runs / replications of the model """
 
@@ -49,7 +49,7 @@ class Batch_rheum_model:
         self.batch_kpi = pd.DataFrame()
         self.savepath=in_savepath
         self.g = g(in_res,in_inter_arrival,in_prob_pifu, in_path_horizon_y, audit_interval,in_FOavoidable=in_FOavoidable,in_interfu_perc=in_interfu_perc) # instance of global variables
-        
+    
     
     def read_logs_to_self(self):
         """Method to read csv results to constructor instance dataframe"""        
@@ -58,10 +58,9 @@ class Batch_rheum_model:
         self.batch_mon_appointments = pd.read_csv(self.savepath +"appt_result.csv")
         self.batch_mon_audit = pd.read_csv(self.savepath + "batch_mon_audit_ls.csv")
     
-       
+    
     def plot_audit_reps(self):
         """ Plotting an overview of behaviour at audit timepoints (across reps) """
-        
         t_warm = self.g.warm_duration
         
         fig_q = plt.figure(figsize=(12,12))
