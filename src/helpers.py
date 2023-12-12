@@ -35,18 +35,18 @@ def Trial_Results_initiate(file1,file2,file3):
         file3 (_string_): path to file that will hold audit KPI log
     """
     # Create a file to store trial results, and write the column headers
-    with open(file1, "w") as f:
-        writer = csv.writer(f, delimiter=",",encoding="cp1252")
+    with open(file1, "w",encoding="cp1252") as f:
+        writer = csv.writer(f, delimiter=",")
         column_headers = ["P_ID", "Q_time_fopa" , "Q_time_fuopa" , "rep"
                         ]
         writer.writerow(column_headers)
-    with open(file2, "w") as f:
-        writer = csv.writer(f, delimiter=",",encoding="cp1252")
+    with open(file2, "w",encoding="cp1252") as f:
+        writer = csv.writer(f, delimiterencoding="cp1252")
         column_headers = ["P_ID", "Appt_ID","priority","type","pathway","q_time","start_q","DNA" , "rep"
                         ]
         writer.writerow(column_headers)
 
-    with open(file3,"w") as f:
-        writer = csv.writer(f, delimiter=",",encoding="cp1252")
+    with open(file3,"w",encoding="cp1252") as f:
+        writer = csv.writer(f, delimiter=",")
         column_headers = ['time','patients in system','all patients waiting','priority 1 patients waiting','priority 2 patients waiting','priority 3 patients waiting','resources occupied','rep']
         writer.writerow(column_headers)
