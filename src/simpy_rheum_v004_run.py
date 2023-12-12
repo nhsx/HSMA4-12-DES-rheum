@@ -1,10 +1,10 @@
-import warnings
-warnings.simplefilter(action='ignore', category=FutureWarning)
-import numpy as np
-from datetime import datetime
 import os
 import csv
 import random
+import warnings
+from datetime import datetime
+warnings.simplefilter(action='ignore', category=FutureWarning)
+import numpy as np
 
 os.chdir('../') ## go up one dir
 import src.Batch_rheum_Model as rheum ##
@@ -86,12 +86,12 @@ if scriptrun_flag:
 # =============================================================================
 
     # Some output KPIs generated and printed
-    #my_batch_model.headline_KPI(365)    
-    #mydf = my_batch_model.headline_KPI(365)    
-    #my_batch_model.save_logs()           
+    #my_batch_model.headline_KPI(365)
+    #mydf = my_batch_model.headline_KPI(365)
+    #my_batch_model.save_logs()
     print(my_batch_model.batch_kpi)
 
-# Model performance - time       
+# Model performance - time
 scenario2run = datetime.now()-start
 print(f"Overall run-time of {scenario2run}")
      

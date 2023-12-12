@@ -1,4 +1,4 @@
-""" includes initialising functions (globals)"""
+""" includes initialising functions class (globals)"""
 
 import pandas as pd
 import numpy as np
@@ -27,7 +27,7 @@ class g:
         self.wl_inter = in_inter_arrival # inter-arrival time [days]
         self.number_of_slots = in_res # number of daily slots [slots]
         self.in_FOavoidable = in_FOavoidable # A&G proportion - proportion of first-only pathways avoidable via A&G [%]
-        
+
         self.warm_duration=365*5 # Warm-up period or window [days] for simulation
         self.max_fuopa_tenor_y = in_path_horizon_y # Patient follow-up horizon [years], simplification on how long each non first-only pathway lasts (years)
         self.max_fuopa_tenor = in_path_horizon_y * 365 # Patient follow-up horizon [days]
@@ -72,5 +72,3 @@ class g:
     def change_reps(self,reps):
         """ Change number of replications for batch run """
         self.number_of_runs = reps
-
-

@@ -40,6 +40,7 @@ class FOPA_Patient:
         self.ls_appt_to_add = [] # Initialise list to hold appointment info
         self.ls_patient_to_add = [] # Initialise list to hold pathway info
         self.RTT_sub = 0 # Initialise a variable that can 'scramble' further priority of first outpatient - priority increment (to increase variance) [Commented out]
+        self.type = "TFU" # Initialise type. By default traditional follow-up.
 
     def triage_decision(self):
         """ Method to decide and assign at random PIFU fate based on PIFU probability"""
@@ -76,7 +77,7 @@ class FOPA_Patient:
     def decision_DNA_tradtion(self):
         """Method to decide and assign at random DNA faith of appointment (first ; traditional)"""
         if  random.random() < self.DNA_tra_pro:
-            self.tradition_dna = True 
+            self.tradition_dna = True
 
     def sub_RTT_priority(self):
         """ Method to further scramble priority of first appointments (rationale: add variability to RTT waiting list times). Currently not in use, needs development"""

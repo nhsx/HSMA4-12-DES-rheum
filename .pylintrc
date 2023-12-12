@@ -3,4 +3,4 @@ max-line-length = 100
 max-args = 12
 
 [MESSAGES CONTROL]
-disable=wildcard-import,method-hidden,too-many-lines,line-too-long,invalid-name
+disable=line-too-long,invalid-name,too-many-instance-attributes
