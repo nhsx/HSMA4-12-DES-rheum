@@ -7,24 +7,36 @@ Created on Mon May  9 16:50:31 2022
 
 import warnings
 warnings.simplefilter(action='ignore', category=FutureWarning)
-import simpy_rheum_v004 as rheum
 import numpy as np
 from datetime import datetime
 import os
 import csv
 import random
 
+os.chdir('../') ## go up one dir
+import src.Batch_rheum_Model as rheum ##
+from src.helpers import Trial_Results_initiate ##
+from src.initialisers import g ##
+
 random.seed(9001)
 
 scriptrun_flag = True # True to save each log line by line (more efficient)
 reps=30 # Number of model replications | Baseline: 30 replications
+outputdir = 'outputs/'
 savepath = 'out_sand/'
+savepath = outputdir + savepath
 start=datetime.now()
 file1 = savepath + 'patient_result2.csv'
 file2 = savepath + 'appt_result.csv'
 file3 = savepath + 'batch_mon_audit_ls.csv'
 #file4 = savepath + 'batch_kpis.csv'
 
+# Check whether the output directory exists or not ##
+isExist = os.path.exists(outputdir)
+if not isExist:
+  # Create a new directory because it does not exist 
+  os.makedirs(outputdir)
+  print("The new directory is created!")
 
 # Check whether the specified path exists or not
 isExist = os.path.exists(savepath)
@@ -33,7 +45,7 @@ if not isExist:
   os.makedirs(savepath)
   print("The new directory is created!")
 
-rheum.Trial_Results_initiate(file1,file2,file3)
+Trial_Results_initiate(file1,file2,file3)
 
 # Create a file to store trial results, and write the column headers
 with open(savepath + "trial_results.csv", "w") as f:
@@ -58,7 +70,7 @@ if scriptrun_flag:
     in_interfu_perc = 0.6 # Percentage increase in inter-appointment interval with PIFU (vs traditional), i.e. 0.6 means 60% longer interval | Baseline: 0.6 | Scenarios: 0.6, 0.2
     #in_interfu_perc = 0.2 # More conservative. Used in scenario C
     
-    g_defaults = rheum.g()
+    g_defaults = g()
     audit_interval = 28 # audit timepoint (in simulation days)
     
     cap  = 1/intarr * ((2 + in_path_horizon_y / g_defaults.mean_interOPA *365) * (1-g_defaults.prob_firstonly) + 2 * g_defaults.prob_firstonly)# * Heuristic of daily slots (365 days) needed to deal with steady-state model demand

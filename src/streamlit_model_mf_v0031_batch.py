@@ -1,19 +1,29 @@
 # from numpy.lib.arraysetops import ediff1d
 import streamlit as st
 import numpy as np
-import simpy_rheum_v004 as rheum
 from datetime import datetime
 import os
 import csv
 import random
 
+os.chdir('../') ## go up one dir
+import src.Batch_rheum_Model as rheum ##
+from src.helpers import Trial_Results_initiate ##
+from src.initialisers import g ##
+
 st.write('| Toy tool of backlog rheumatology outpatient Discrete Event Simulation Model. The effect of Patient Initiated Follow-up (PIFU) and Advice & Guidance (A&G) can be simulated. The runs may take 5-10 minutes, Only 3 simulation replications are used so caution is needed - more are used in report examples.')
-
-
 
 st.title('Rheumatology PIFU Queueing Simulation - main scenario')
 
+outputdir = 'outputs/'
 savepath = 'out_streamlit_S1/'
+savepath = outputdir + savepath
+
+# Check whether the Outputs directory exists or not ##
+isExist = os.path.exists(outputdir)
+if not isExist:
+  os.makedirs(outputdir)
+  print("The new directory is created!")
 
 # Check whether the specified path exists or not
 isExist = os.path.exists(savepath)
@@ -25,7 +35,9 @@ file1 = savepath + 'patient_result2.csv'
 file2 = savepath + 'appt_result.csv'
 file3 = savepath + 'batch_mon_audit_ls.csv'
 
-rheum.Trial_Results_initiate(file1,file2,file3)
+nrep = 2 ## number of reps to run
+
+Trial_Results_initiate(file1,file2,file3)
 
 # Create a file to store trial results, and write the column headers
 with open(savepath + "trial_results.csv", "w") as f:
@@ -43,7 +55,7 @@ in_prob_pifu = col2.slider('PIFU - proportion that goes to PIFU (%) *', 0,100,0,
 in_interfu_perc = col3.slider('PIFU - increase in inter-appointment interval (%)', 0.0,100.0,60.0,step=1.0)/100
 in_FOavoidable = col4.slider('A&G - first-only pathways avoidable (%)', 0,100,0,step=1)/100
 
-g_defaults = rheum.g()
+g_defaults = g()
 
 in_path_horizon_y = 3
 audit_interval = 28*2
@@ -73,6 +85,7 @@ rheum_model = rheum.Batch_rheum_model(in_res= in_res,
 st.title('Rheumatology PIFU Queueing Simulation - scenario 2')
 
 savepath_S2 = 'out_streamlit_S2/'
+savepath_S2 = outputdir+savepath_S2
 
 # Check whether the specified path exists or not
 isExist = os.path.exists(savepath_S2)
@@ -84,7 +97,7 @@ file1 = savepath_S2 + 'patient_result2.csv'
 file2 = savepath_S2 + 'appt_result.csv'
 file3 = savepath_S2 + 'batch_mon_audit_ls.csv'
 
-rheum.Trial_Results_initiate(file1,file2,file3)
+Trial_Results_initiate(file1,file2,file3)
 
 
 #colS2_1, colS2_2, colS2_3, colS2_4, colS2_5 = st.columns(3)
@@ -133,7 +146,7 @@ if main_button:
     # Get results
     start=datetime.now()
     random.seed(9001)
-    fig_audit_reps, chart, text , quant, fig_q_audit_reps,fig_monappKPI_reps,fig_monappKPIn_reps = rheum_model.run_reps(3)
+    fig_audit_reps, chart, text , quant, fig_q_audit_reps,fig_monappKPI_reps,fig_monappKPIn_reps = rheum_model.run_reps(nrep)
     scenario1run = datetime.now()-start
     print(f"Run-time of {scenario1run}")
     # Show chart
@@ -170,7 +183,7 @@ if tworuns_button:
     # Get results
     start=datetime.now()
     random.seed(9001)
-    fig_audit_reps, chart, text , quant, fig_q_audit_reps,fig_monappKPI_reps, fig_monappKPIn_reps = rheum_model.run_reps(3)
+    fig_audit_reps, chart, text , quant, fig_q_audit_reps,fig_monappKPI_reps, fig_monappKPIn_reps = rheum_model.run_reps(nrep)
     scenario1run = datetime.now()-start
     print(f"Run-time of {scenario1run}")
     # Show chart
@@ -201,7 +214,7 @@ if tworuns_button:
     st.subheader("Scenario 2")
     # Get results
     start=datetime.now()
-    fig_audit_reps_S2, chart_S2, text_S2 , quant_S2, fig_q_audit_reps_S2,fig_monappKPI_reps_S2, fig_monappKPIn_reps_S2 = rheum_model_S2.run_reps(3)
+    fig_audit_reps_S2, chart_S2, text_S2 , quant_S2, fig_q_audit_reps_S2,fig_monappKPI_reps_S2, fig_monappKPIn_reps_S2 = rheum_model_S2.run_reps(nrep)
     scenario2run = datetime.now()-start
     print(f"Run-time of {scenario2run}")
     st.write('Run-time:')
