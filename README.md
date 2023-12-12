@@ -93,7 +93,7 @@ Search and install.
 
 ### Running the model
 
-The main `simpy` model implementation is in `simpy_rheum_v004.py` but the model is run from either a Python script (full flexibility) or an interactive web app (GUI but more limited user parameters).
+The main `simpy` model implementation is in `Batch_rheum_Model.py` but the model is run from either a Python script (full flexibility) or an interactive web app (GUI but more limited user parameters).
 
 #### Via Python script or jupyter notebook
 
