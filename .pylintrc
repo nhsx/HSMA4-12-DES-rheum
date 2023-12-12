@@ -2,4 +2,4 @@
 max-line-length=100
 
 [MESSAGES CONTROL]
-disable=wildcard-import,method-hidden,too-many-lines,line-too-long
+disable=wildcard-import,method-hidden,too-many-lines,line-too-long,invalid-name

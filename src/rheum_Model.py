@@ -220,7 +220,7 @@ class rheum_Model:
                 
                 patient.decision_DNA_tradtion() # Decide whether this is a DNA or not
                 
-                if patient.tradition_dna==True:
+                if patient.tradition_dna:
                     if self.g.debug and self.g.debuglevel>=2:
                         print(f" Patient {patient.id} queued {np.round(patient.q_time_fopa,2)} days for 1st app. Priority {patient.priority} but didn't attend the appointment")
     
@@ -237,13 +237,13 @@ class rheum_Model:
                 if self.g.loglinesave:
                     
                     with open(self.savepath +"appt_result.csv", "a") as f:
-                         writer = csv.writer(f, delimiter=",")
-                         writer.writerow(patient.ls_appt_to_add)
+                        writer = csv.writer(f, delimiter=",")
+                        writer.writerow(patient.ls_appt_to_add)
                     
                     if start_q_fopa > self.g.warm_duration: # don't save things in warm-up period
                         with open(self.savepath +"patient_result2.csv", "a") as f:
-                             writer = csv.writer(f, delimiter=",")
-                             writer.writerow(patient.ls_patient_to_add)
+                            writer = csv.writer(f, delimiter=",")
+                            writer.writerow(patient.ls_patient_to_add)
                                               
                 else:
                     patient.df_appt_to_add = pd.DataFrame( columns = ["P_ID","App_ID","priority","type","pathway","q_time","start_q","DNA","rep"] ,
@@ -315,8 +315,8 @@ class rheum_Model:
                     patient.ls_appt_to_add = [patient.id, patient.ls_appt[-1],patient.priority,"Traditional",patient.type,patient.q_time_fuopa,start_q_fuopa,patient.tradition_dna,self.g.repid]                            
                     if self.g.loglinesave:                    
                         with open(self.savepath +"appt_result.csv", "a") as f:
-                             writer = csv.writer(f, delimiter=",")
-                             writer.writerow(patient.ls_appt_to_add)
+                            writer = csv.writer(f, delimiter=",")
+                            writer.writerow(patient.ls_appt_to_add)
     
                     else:                         
                         patient.df_appt_to_add = pd.DataFrame( columns = ["P_ID","App_ID","priority","type","pathway","q_time","start_q","DNA","rep"] ,
@@ -376,11 +376,11 @@ class rheum_Model:
                         yield self.env.timeout(1) # freeze for one time-unit (a day) - that same slot will only be available the next day
                     
                         patient.decision_DNA_pifu() # Determine DNA status of appointment
-                        if patient.pifu_dna==True:
+                        if patient.pifu_dna:
                             if self.g.debug  and self.g.debuglevel>=2:
                                 print(f"Req {patient.ls_appt[-1]}: Patient {patient.id} queued {np.round(patient.q_time_pifuopa,2)} days for app {patient.used_fuopa} - PIFU. Priority {patient.priority} but did not attend")
                         else:
-                             if self.g.debug  and self.g.debuglevel>=2:
+                            if self.g.debug  and self.g.debuglevel>=2:
                                 print(f"Req {patient.ls_appt[-1]}: Patient {patient.id} queued {np.round(patient.q_time_pifuopa,2)} days for app {patient.used_fuopa} - PIFU. Priority {patient.priority}")
                         
                             
@@ -388,8 +388,8 @@ class rheum_Model:
                         patient.ls_appt_to_add = [patient.id, patient.ls_appt[-1],patient.priority,"PIFU",patient.type,end_q_pifuopa - start_q_pifuopa,start_q_pifuopa,patient.pifu_dna,self.g.repid]                            
                         if self.g.loglinesave:                    
                             with open(self.savepath +"appt_result.csv", "a") as f:
-                                 writer = csv.writer(f, delimiter=",")
-                                 writer.writerow(patient.ls_appt_to_add) 
+                                writer = csv.writer(f, delimiter=",")
+                                writer.writerow(patient.ls_appt_to_add) 
                         
                         else:
                             patient.df_appt_to_add = pd.DataFrame( columns = ["P_ID","App_ID","priority","type","pathway","q_time","start_q","DNA","rep"] ,
@@ -488,7 +488,7 @@ class rheum_Model:
         # Chart loops through 3 priorites
         markers = ['o', 'x', '^']
         for priority in range(1, 4):
-            x = (self.g.appt_queuing_results[self.g.appt_queuing_results['priority'] == priority].index)
+            x = self.g.appt_queuing_results[self.g.appt_queuing_results['priority'] == priority].index
             
             y = (self.g.appt_queuing_results
                  [self.g.appt_queuing_results['priority'] == priority]['q_time'])
@@ -630,8 +630,8 @@ class rheum_Model:
             if self.g.loglinesave:
                 ls_audit_to_add = [self.env.now, len(FOPA_Patient.all_patients), self.g.patients_waiting, self.g.patients_waiting_by_priority[0], self.g.patients_waiting_by_priority[1], self.g.patients_waiting_by_priority[2],self.consultant.count,self.g.repid]                                               
                 with open(self.savepath +"batch_mon_audit_ls.csv", "a") as f:
-                     writer = csv.writer(f, delimiter=",")
-                     writer.writerow(ls_audit_to_add)
+                    writer = csv.writer(f, delimiter=",")
+                    writer.writerow(ls_audit_to_add)
                      
             else:
                 #Record patients waiting by referencing global variables
@@ -692,7 +692,7 @@ class rheum_Model:
         # Load Results log - audit
         if self.g.loglinesave:
             self.g.results = pd.read_csv(self.savepath + "batch_mon_audit_ls.csv") # read from csv
-            self.g.results = (self.g.results[self.g.results['rep'] == self.g.repid])
+            self.g.results = self.g.results[self.g.results['rep'] == self.g.repid]
         else:
             self.build_audit_results() # assemple from lists in memory
         
