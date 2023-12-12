@@ -35,7 +35,7 @@ file1 = savepath + 'patient_result2.csv'
 file2 = savepath + 'appt_result.csv'
 file3 = savepath + 'batch_mon_audit_ls.csv'
 
-nrep = 2 ## number of reps to run
+nrep = 3 ## number of reps to run
 
 Trial_Results_initiate(file1,file2,file3)
 

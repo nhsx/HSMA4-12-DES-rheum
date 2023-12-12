@@ -2,8 +2,16 @@ import scipy.stats as st
 import numpy as np
 import csv
 
-# Code to compute (small sample) confidence interval, taken from web.
 def mean_confidence_interval(data, confidence=0.95):
+    """ Code to compute (small sample) confidence interval, taken from web.
+
+    Args:
+        data (_type_): _description_
+        confidence (float, optional): The confidence level to apply, as decimal. Defaults to 0.95.
+
+    Returns:
+        _type_: The mean, the lower bound and the upper bound of the confidence interval.
+    """
             a = 1.0 * np.array(data)
             n = len(a)
             m, se = np.mean(a), st.sem(a)
@@ -12,14 +20,19 @@ def mean_confidence_interval(data, confidence=0.95):
 
 
 class patient_blocker:
-
+    """ Initialise a patient_blocker class (ghost patients that will block slots from actual patients, to emulate varying capacity and opening hours)."""
     def __init__(self,blockerid):        
         self.blockerid = blockerid
 
 
-# Method to create files that will hold logs - RTT patient (1), appointment (2), audit (3)
 def Trial_Results_initiate(file1,file2,file3):
-    
+    """Method to create files that will hold logs - RTT patient (1), appointment (2), audit (3)
+
+    Args:
+        file1 (_string_): path to file that will hold RTT patient log
+        file2 (_string_): path to file that will hold appointment log
+        file3 (_string_): path to file that will hold audit KPI log
+    """
     # Create a file to store trial results, and write the column headers
         with open(file1, "w") as f:
             writer = csv.writer(f, delimiter=",")
