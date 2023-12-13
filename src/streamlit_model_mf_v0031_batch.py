@@ -24,14 +24,12 @@ savepath = outputdir + savepath
 isExist = os.path.exists(outputdir)
 if not isExist:
     os.makedirs(outputdir)
-    print("The new directory is created!")
 
 # Check whether the specified path exists or not
 isExist = os.path.exists(savepath)
 if not isExist:
-    # Create a new directory because it does not exist
     os.makedirs(savepath)
-    print("The new directory is created!")
+    
 file1 = savepath + 'patient_result2.csv'
 file2 = savepath + 'appt_result.csv'
 file3 = savepath + 'batch_mon_audit_ls.csv'

@@ -133,7 +133,7 @@ class rheum_Model:
             # Run indefinitely till end of simulation
             while True:
                 # Iterate over number of slots that needs blocking
-                for i in range(self.g.unavail_nrslots):
+                for _ in range(self.g.unavail_nrslots):
 
                     self.block_counter += 1
                     slot_block = patient_blocker(self.block_counter)
@@ -442,11 +442,11 @@ class rheum_Model:
         self.results_df['Q_Time_total']=self.results_df.sum(axis=1)
         self.mean_q_time_total = self.results_df.mean(axis=0)
 
-    """ Deprecated. A method to write run results to file.  Here, we write the run number
-    against the the calculated mean queuing time for the nurse across
-    patients in the run.  Again, we can call this at the end of each run"""
     def write_run_results(self):
-        with open(self.savepath +"trial_results.csv", "a") as f:
+        """ Deprecated. A method to write run results to file.  Here, we write the run number
+        against the the calculated mean queuing time for the nurse across
+        patients in the run.  Again, we can call this at the end of each run"""
+        with open(self.savepath +"trial_results.csv", "a",encoding="cp1252") as f:
             writer = csv.writer(f, delimiter=",")
             results_to_write = [self.run_number,
                                 self.mean_q_time_total['Q_time_fopa'],
