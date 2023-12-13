@@ -1,3 +1,5 @@
+""" includes initialising functions class (globals)"""
+
 import pandas as pd
 import numpy as np
 
@@ -11,11 +13,11 @@ class g:
     interOPA_tri = np.round(np.array([3,6,4.5])*365/12) # days inbetween appointments (traditional pathway) - low, high , mode for triangular distribution
     t_decision = 1 * 365 # days, time mark for pathway PIFU decision / stratification (from first OPA appointment)
     obs_duration=365*3 # observation period or window (days) for simulation, in addition to warm-up period
-    
+
     debug=True # whether to print to console
     debuglevel = 1 # level of debug prints - 1 as lowest ; 4 for most detailed
 
-        
+
     def __init__(self,in_res=5,in_inter_arrival=1,in_prob_pifu=0,in_path_horizon_y=3,audit_interval=7,in_reps=1,repid=1,savepath='temp',in_FOavoidable=0,in_interfu_perc=0.6):
         """ Initialise global parameter values."""
 
@@ -25,7 +27,7 @@ class g:
         self.wl_inter = in_inter_arrival # inter-arrival time [days]
         self.number_of_slots = in_res # number of daily slots [slots]
         self.in_FOavoidable = in_FOavoidable # A&G proportion - proportion of first-only pathways avoidable via A&G [%]
-        
+
         self.warm_duration=365*5 # Warm-up period or window [days] for simulation
         self.max_fuopa_tenor_y = in_path_horizon_y # Patient follow-up horizon [years], simplification on how long each non first-only pathway lasts (years)
         self.max_fuopa_tenor = in_path_horizon_y * 365 # Patient follow-up horizon [days]
@@ -37,18 +39,18 @@ class g:
         self.PIFUbigbang = False # [boolean] Whether, when PIFU starts being used, it is offered to all eligible patients when they visit (e.g. those already followed up for years) - big-bang - or only new eligible patients
 
         self.unavail_on = False # [boolean] Whther to use resource unavailability functionality
-        self.unavail_byshock = False # [boolean] for now model only for unavailability by single shock period OR by periodic (e.g. weekends). Can be improved in future.        
-        
+        self.unavail_byshock = False # [boolean] for now model only for unavailability by single shock period OR by periodic (e.g. weekends). Can be improved in future.
+
         # Parameters for a shock to available resource (one-off) - if unavail_byshock = True and unavail_on = True
         self.unavail_shock_tmin = 365 * 3 # [days] Time in simulation days from which shock starts
         self.unavail_shock_period = np.floor(365/12 * 12) # [days] Period in simulation days for which the shock lasts e.g. from half-March (emergency response) to half-August (letter on Aug2020 for NHS response)
         self.unavail_shock_nrslots = int(np.floor(in_res*1)) # [slots] No of slots unavailable during shock
-        
+
         # Parameters for periodic resource unavailability (e.g. weekends, leave) - if unavail_byshock = False and unavail_on = True
         self.unavail_slot=2 # [days] Time window of unavailability
         self.unavail_freq_slot=5 # [days] Time window of availability
         self.unavail_nrslots = int(np.floor(in_res*1)) # [slots] No of slots unavailable during each unavail period. Baseline: 100% of slots unavailable
-        
+
         self.savepath = savepath # [string] Save path for outputs
         self.repid = repid # [integer] Id of current replication (within batch)
         self.loglinesave = True # if true saves each line to file, if false creates dataframe that stays in memory (former found to be more efficient)
@@ -66,10 +68,11 @@ class g:
         self.appt_queuing_results = (pd.DataFrame(
             columns=['P_ID','App_ID','priority','type',"pathway",'q_time','start_q','DNA'])) # populated in pathway (FOPA_Patiet)
         self.appt_queuing_results.set_index("App_ID", inplace=True) # reset index
-    
-    
+
     def change_reps(self,reps):
         """ Change number of replications for batch run """
         self.number_of_runs = reps
 
-
+    def give_reps(self):
+        """ Give number of replications for batch run """
+        return self.number_of_runs

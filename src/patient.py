@@ -1,10 +1,10 @@
+""" Module includes rheumatology patient class."""
 import random
 import pandas as pd
-import numpy as np
+# import numpy as np
 
-# Class representing our RTT patients entering the secondary care rheumatology pathway.
 class FOPA_Patient:
-
+    """Class representing our RTT patients entering the secondary care rheumatology pathway."""
     # The following dictionaries store patients
     all_patients = {}
 
@@ -37,10 +37,11 @@ class FOPA_Patient:
         self.FOavoided = False # instantiate whether first outpatient avoided fully as False
         self.df_appt_to_add = (pd.DataFrame(
             columns=['P_ID','App_ID','priority','type',"pathway",'q_time','start_q'])) # Initialise dataframe to hold appointment log
-        self.ls_appt_to_add = [] # Initialise list to hold appointment info 
+        self.ls_appt_to_add = [] # Initialise list to hold appointment info
         self.ls_patient_to_add = [] # Initialise list to hold pathway info
         self.RTT_sub = 0 # Initialise a variable that can 'scramble' further priority of first outpatient - priority increment (to increase variance) [Commented out]
-    
+        self.type = "TFU" # Initialise type. By default traditional follow-up.
+
     def triage_decision(self):
         """ Method to decide and assign at random PIFU fate based on PIFU probability"""
         if random.random() < self.prob_pifu:
@@ -49,15 +50,15 @@ class FOPA_Patient:
         else:
             self.type = "TFU"
             #self.priority = 2 # assign 2nd highest priority in the sense that those on traditional already are scheduled in/planned so not really 'moveable'
-    
+
     def give_pifu_priority(self):
         """Method to change priority to '2', i.e. PIFU"""
         self.priority =  2 # assign 2nd highest priority in the sense that those on traditional already are scheduled in/planned so not really 'moveable'
-        
+
     def give_tfu_priority(self):
         """Method to change priority to '1', i.e. traditional / booked"""
         self.priority = 1
-    
+
     def assign_firstonly(self,prob_firstonly):
         """Method to assign 'first-only' pathway and appointment status or otherwise 'first' (of more appointments), based on a probability prob_firstonly"""
         if random.random() < prob_firstonly:
@@ -65,37 +66,37 @@ class FOPA_Patient:
             self.apptype = "First-only"
             self.max_fuopa_tenor = 0 # no follow-ups
         else:
-           self.type = "First" # first leading to long-term follow-up
-           self.apptype = "First"
-            
+            self.type = "First" # first leading to long-term follow-up
+            self.apptype = "First"
+
     def decision_DNA_pifu(self):
         """Method to decide and assign at random DNA fate of appointment (PIFU)"""
         if  random.random() < self.DNA_pifu_pro:
             self.pifu_dna = True
-             
+
     def decision_DNA_tradtion(self):
         """Method to decide and assign at random DNA faith of appointment (first ; traditional)"""
         if  random.random() < self.DNA_tra_pro:
-            self.tradition_dna = True 
-    
+            self.tradition_dna = True
+
     def sub_RTT_priority(self):
         """ Method to further scramble priority of first appointments (rationale: add variability to RTT waiting list times). Currently not in use, needs development"""
         # to add some spread to the RTT list
-        
+
         # Bernoulli p=0.5
         #self.RTT_sub = random.randint(0, 1)
-        
+
         # Bernoulli p chosen
         #if  random.random() < 0.3:
         #    self.RTT_sub=1
-        
+
         # Sampling from options, equiprobable
         #self.RTT_sub = np.random.choice([0,1,2,3,4,5,6,7,8,9], 1, replace=False)[0]
-        
+
         #print()
         pass
-    
-      
+
+
     def avoidable_firstonly(self,in_FOavoidable):
         """Method to decide and assign at random whether a first-only pathway can be avoided or not (advice&guidance) 
         
@@ -104,5 +105,5 @@ class FOPA_Patient:
 
         """
         # A&G, whether a first-only appointment can be avoided
-        if random.random() < in_FOavoidable:            
+        if random.random() < in_FOavoidable:
             self.FOavoided = True
