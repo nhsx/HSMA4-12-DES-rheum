@@ -1,0 +1,26 @@
+name: Pylint
+
+on: [push]
+
+jobs:
+  build:
+    runs-on: ubuntu-latest
+    strategy:
+      matrix:
+        python-version: ["3.9"]
+    steps:
+    - uses: actions/checkout@v3
+    - name: Set up Python ${{ matrix.python-version }}
+      uses: actions/setup-python@v3
+      with:
+        python-version: ${{ matrix.python-version }}
+    - name: Install dependencies
+      run: |
+        python -m pip install --upgrade pip
+        pip install pylint
+        pip install pandas numpy matplotlib seaborn
+        pip install simpy streamlit scipy
+    - name: Analysing the code with pylint
+      run: |
+        cd src
+        pylint --rcfile=.pylintrc --fail-under=8 $(git ls-files '*.py')
