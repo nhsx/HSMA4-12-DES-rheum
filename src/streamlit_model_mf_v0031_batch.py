@@ -29,7 +29,7 @@ if not isExist:
 isExist = os.path.exists(savepath)
 if not isExist:
     os.makedirs(savepath)
-    
+
 file1 = savepath + 'patient_result2.csv'
 file2 = savepath + 'appt_result.csv'
 file3 = savepath + 'batch_mon_audit_ls.csv'
@@ -38,12 +38,10 @@ nrep = 3 ## number of reps to run
 
 Trial_Results_initiate(file1,file2,file3)
 
-# Create a file to store trial results, and write the column headers
+# Create file to store trial results
 with open(savepath + "trial_results.csv", "w",encoding="cp1252") as f:
     writer = csv.writer(f, delimiter=",")
-    column_headers = ["Run", "Mean_Q_Time_FOPA",
-                      "Mean_Q_Time_FUOPA",
-                      "Mean_Q_Time_Total"]
+    column_headers = ["Run", "Mean_Q_Time_FOPA","Mean_Q_Time_FUOPA","Mean_Q_Time_Total"]
     writer.writerow(column_headers)
 
 #col1, col2, col3, col4, col5 = st.columns(3)
