@@ -23,4 +23,4 @@ jobs:
     - name: Analysing the code with pylint
       run: |
         cd src
-        pylint --rcfile=.pylintrc --ignore-long-lines --fail-under 8 $(git ls-files '*.py')
+        pylint --rcfile=.pylintrc --fail-under=8 $(git ls-files '*.py')
