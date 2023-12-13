@@ -1,10 +1,10 @@
 """ Python script (.py) to run the experiment. Similar can be achieved with the .ipynb file. """
-import numpy as np
 import os
 import csv
 import random
 import warnings
 from datetime import datetime
+import numpy as np
 warnings.simplefilter(action='ignore', category=FutureWarning)
 
 

@@ -1,10 +1,10 @@
 """ Python script (.py) for deployment of MVP Streamlit app."""
 # from numpy.lib.arraysetops import ediff1d
-import numpy as np
 from datetime import datetime
 import os
 import csv
 import random
+import numpy as np
 import streamlit as st
 
 os.chdir('../') ## go up one dir
@@ -243,6 +243,3 @@ if tworuns_button:
     # for t in text_S2:
     #     st.write(t)
     #st.write(quant_S2)
-
-
-

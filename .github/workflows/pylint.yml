@@ -22,4 +22,5 @@ jobs:
         pip install simpy streamlit scipy
     - name: Analysing the code with pylint
       run: |
+        cd src
         pylint --rcfile=.pylintrc --ignore-long-lines $(git ls-files '*.py')

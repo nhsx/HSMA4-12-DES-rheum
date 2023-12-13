@@ -115,7 +115,7 @@ class rheum_Model:
             yield self.env.timeout(self.g.unavail_shock_tmin)
 
             # Iterate over number of slots that needs blocking
-            for i in range(self.g.unavail_shock_nrslots):
+            for _ in range(self.g.unavail_shock_nrslots):
 
                 self.block_counter += 1
                 slot_block = patient_blocker(self.block_counter)
@@ -188,7 +188,7 @@ class rheum_Model:
 
                 # if non-first-only pathway
                 if patient.type != "First-only":
-                # determine already their PIFU faith                
+                # determine already their PIFU fate
                     if self.g.PIFUbigbang: # if 'big-bang' ('stock'), i.e. PIFU applied to all FY cohorts / pathways, draw PIFU for all
                         patient.triage_decision()
 
@@ -233,12 +233,12 @@ class rheum_Model:
                 # Whether to save each log line or hold in memory by appending
                 if self.g.loglinesave:
 
-                    with open(self.savepath +"appt_result.csv", "a") as f:
+                    with open(self.savepath +"appt_result.csv", "a",encoding="cp1252") as f:
                         writer = csv.writer(f, delimiter=",")
                         writer.writerow(patient.ls_appt_to_add)
 
                     if start_q_fopa > self.g.warm_duration: # don't save things in warm-up period
-                        with open(self.savepath +"patient_result2.csv", "a") as f:
+                        with open(self.savepath +"patient_result2.csv", "a",encoding="cp1252") as f:
                             writer = csv.writer(f, delimiter=",")
                             writer.writerow(patient.ls_patient_to_add)
 
@@ -295,7 +295,7 @@ class rheum_Model:
                     if patient.used_fuopa ==1 : # deprecated, not relevant
                         patient.q_time_fuopa = end_q_fuopa - start_q_fuopa
 
-                    patient.decision_DNA_tradtion() # Determine DNA faith
+                    patient.decision_DNA_tradtion() # Determine DNA fate
                     if patient.tradition_dna:
                         if self.g.debug  and self.g.debuglevel>=2:
                             print(f"Req {patient.ls_appt[-1]}: Patient {patient.id} queued {np.round(end_q_fuopa - start_q_fuopa,2)} for app {patient.used_fuopa}. Priority {patient.priority}")
@@ -311,7 +311,7 @@ class rheum_Model:
                     # Add to appointment log or save
                     patient.ls_appt_to_add = [patient.id, patient.ls_appt[-1],patient.priority,"Traditional",patient.type,patient.q_time_fuopa,start_q_fuopa,patient.tradition_dna,self.g.repid]
                     if self.g.loglinesave:
-                        with open(self.savepath +"appt_result.csv", "a") as f:
+                        with open(self.savepath +"appt_result.csv", "a",encoding="cp1252") as f:
                             writer = csv.writer(f, delimiter=",")
                             writer.writerow(patient.ls_appt_to_add)
 
@@ -384,7 +384,7 @@ class rheum_Model:
                         # Add to appointment log or save
                         patient.ls_appt_to_add = [patient.id, patient.ls_appt[-1],patient.priority,"PIFU",patient.type,end_q_pifuopa - start_q_pifuopa,start_q_pifuopa,patient.pifu_dna,self.g.repid]
                         if self.g.loglinesave:
-                            with open(self.savepath +"appt_result.csv", "a") as f:
+                            with open(self.savepath +"appt_result.csv", "a",encoding="cp1252") as f:
                                 writer = csv.writer(f, delimiter=",")
                                 writer.writerow(patient.ls_appt_to_add)
 
@@ -578,8 +578,8 @@ class rheum_Model:
         return fig
 
     def summarise(self):
-        """ single run summaries for streamlit (quartiles) - NEED CHECKING, NOT RUNNING AS SHOULD """
-        """Produces displayed text summary of model run"""
+        """ single run summaries for streamlit (quartiles) - NEED CHECKING, NOT RUNNING AS SHOULD
+        Produces displayed text summary of model run"""
 
         self.g.appt_queuing_results['priority']=pd.to_numeric(self.g.appt_queuing_results['priority'])
         self.g.appt_queuing_results['q_time']=pd.to_numeric(self.g.appt_queuing_results['q_time'])
@@ -622,7 +622,7 @@ class rheum_Model:
             ## alternative with save to file
             if self.g.loglinesave:
                 ls_audit_to_add = [self.env.now, len(FOPA_Patient.all_patients), self.g.patients_waiting, self.g.patients_waiting_by_priority[0], self.g.patients_waiting_by_priority[1], self.g.patients_waiting_by_priority[2],self.consultant.count,self.g.repid]
-                with open(self.savepath +"batch_mon_audit_ls.csv", "a") as f:
+                with open(self.savepath +"batch_mon_audit_ls.csv", "a",encoding="cp1252") as f:
                     writer = csv.writer(f, delimiter=",")
                     writer.writerow(ls_audit_to_add)
 
@@ -649,16 +649,13 @@ class rheum_Model:
             yield self.env.timeout(self.g.audit_interval)
 
 
-    def run(self,repid=1):
+    def run(self):
         """  Run method to do a single run of the model.
 
         The run method starts up the entity generators, and tells SimPy to start
         running the environment for the duration specified in the g class. After
         the simulation has run, it calls the methods that calculate run
         results, and the method that writes these results to file
-
-        Args:
-            repid (int, optional): The replication id. Defaults to 1.
 
         Returns:
             chart_output: Chart output for streamlit
