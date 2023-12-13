@@ -41,7 +41,7 @@ def Trial_Results_initiate(file1,file2,file3):
                         ]
         writer.writerow(column_headers)
     with open(file2, "w",encoding="cp1252") as f:
-        writer = csv.writer(f, delimiterencoding="cp1252")
+        writer = csv.writer(f, delimiter=",")
         column_headers = ["P_ID", "Appt_ID","priority","type","pathway","q_time","start_q","DNA" , "rep"
                         ]
         writer.writerow(column_headers)

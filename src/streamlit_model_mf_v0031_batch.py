@@ -1,10 +1,11 @@
+""" Python script (.py) for deployment of MVP Streamlit app."""
 # from numpy.lib.arraysetops import ediff1d
-import streamlit as st
 import numpy as np
 from datetime import datetime
 import os
 import csv
 import random
+import streamlit as st
 
 os.chdir('../') ## go up one dir
 import src.Batch_rheum_Model as rheum ##
@@ -22,15 +23,15 @@ savepath = outputdir + savepath
 # Check whether the Outputs directory exists or not ##
 isExist = os.path.exists(outputdir)
 if not isExist:
-  os.makedirs(outputdir)
-  print("The new directory is created!")
+    os.makedirs(outputdir)
+    print("The new directory is created!")
 
 # Check whether the specified path exists or not
 isExist = os.path.exists(savepath)
 if not isExist:
-  # Create a new directory because it does not exist 
-  os.makedirs(savepath)
-  print("The new directory is created!")
+    # Create a new directory because it does not exist
+    os.makedirs(savepath)
+    print("The new directory is created!")
 file1 = savepath + 'patient_result2.csv'
 file2 = savepath + 'appt_result.csv'
 file3 = savepath + 'batch_mon_audit_ls.csv'
@@ -40,7 +41,7 @@ nrep = 3 ## number of reps to run
 Trial_Results_initiate(file1,file2,file3)
 
 # Create a file to store trial results, and write the column headers
-with open(savepath + "trial_results.csv", "w") as f:
+with open(savepath + "trial_results.csv", "w",encoding="cp1252") as f:
     writer = csv.writer(f, delimiter=",")
     column_headers = ["Run", "Mean_Q_Time_FOPA",
                       "Mean_Q_Time_FUOPA",
@@ -90,9 +91,9 @@ savepath_S2 = outputdir+savepath_S2
 # Check whether the specified path exists or not
 isExist = os.path.exists(savepath_S2)
 if not isExist:
-  # Create a new directory because it does not exist 
-  os.makedirs(savepath_S2)
-  print("The new directory is created!")
+    # Create a new directory because it does not exist
+    os.makedirs(savepath_S2)
+    print("The new directory is created!")
 file1 = savepath_S2 + 'patient_result2.csv'
 file2 = savepath_S2 + 'appt_result.csv'
 file3 = savepath_S2 + 'batch_mon_audit_ls.csv'
@@ -178,7 +179,7 @@ if main_button:
 
 
 if tworuns_button:
-    
+
     st.subheader("Main scenario")
     # Get results
     start=datetime.now()
@@ -210,7 +211,7 @@ if tworuns_button:
     # for t in text:
     #     st.write(t)
     #st.write(quant)
-    
+
     st.subheader("Scenario 2")
     # Get results
     start=datetime.now()
@@ -242,6 +243,6 @@ if tworuns_button:
     # for t in text_S2:
     #     st.write(t)
     #st.write(quant_S2)
-    
+
 
 

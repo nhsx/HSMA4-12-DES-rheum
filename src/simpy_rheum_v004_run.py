@@ -1,10 +1,12 @@
+""" Python script (.py) to run the experiment. Similar can be achieved with the .ipynb file. """
+import numpy as np
 import os
 import csv
 import random
 import warnings
 from datetime import datetime
 warnings.simplefilter(action='ignore', category=FutureWarning)
-import numpy as np
+
 
 os.chdir('../') ## go up one dir
 import src.Batch_rheum_Model as rheum ##
@@ -41,7 +43,7 @@ if not isExist:
 Trial_Results_initiate(file1,file2,file3)
 
 # Create a file to store trial results, and write the column headers
-with open(savepath + "trial_results.csv", "w") as f:
+with open(savepath + "trial_results.csv", "w",encoding="cp1252") as f:
     writer = csv.writer(f, delimiter=",")
     column_headers = ["Run", "Mean_Q_Time_FOPA",
                       "Mean_Q_Time_FUOPA",

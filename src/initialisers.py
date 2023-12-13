@@ -72,3 +72,7 @@ class g:
     def change_reps(self,reps):
         """ Change number of replications for batch run """
         self.number_of_runs = reps
+
+    def give_reps(self):
+        """ Give number of replications for batch run """
+        return self.number_of_runs

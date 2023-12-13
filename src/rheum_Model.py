@@ -63,7 +63,7 @@ class rheum_Model:
             # Increment the patient counter by 1
             self.patient_counter += 1
 
-            # Create a new patient - an instance of the FOPA_Patient 
+            # Create a new patient - an instance of the FOPA_Patient
             # class, and give the patient an ID determined by the patient
             # counter, its PIFU prob, its follow-up tenor, its DNA probabilities
             wp = FOPA_Patient(self.patient_counter,self.g.prob_pifu,self.g.max_fuopa_tenor, self.g.DNA_pifu_pro,self.g.DNA_tra_pro)
@@ -84,17 +84,16 @@ class rheum_Model:
             yield self.env.timeout(sampled_interarrival)
 
 
-    def obstruct_slot(self,patient_blocker,unavail_timeperiod):
+    def obstruct_slot(self,unavail_timeperiod):
         """  A method to obstruct a single slot (emulate unavailability)
 
         Args:
-            patient_blocker (_class_): An instantiated patient_blocker class (to "compete" with FOPA_Patient for slots)
             unavail_timeperiod (_type_): Time that the slot is obstructed.
 
         Yields:
             _type_: A given timed out period where the slot is unavailable
         """
-            
+
         # Once this time has elapsed, request a slot wiyh priority
         # of -1 (so that we know this will get the top priority, as none
         # of our pathway appointment requests will have a negative priority), and hold them
@@ -128,12 +127,12 @@ class rheum_Model:
                     print ("Appointment will not be able to book at",
                            f"{self.env.now + self.g.unavail_freq_slot:.1f}")
 
-        # If unavailability is periodic                     
+        # If unavailability is periodic
         else:
 
             # Run indefinitely till end of simulation
             while True:
-                # Iterate over number of slots that needs blocking 
+                # Iterate over number of slots that needs blocking
                 for i in range(self.g.unavail_nrslots):
 
                     self.block_counter += 1
@@ -148,7 +147,7 @@ class rheum_Model:
 
                 # Freeze the function for the time period during which no unavailability
                 yield self.env.timeout(self.g.unavail_freq_slot)
-                
+
     def attend_OPA(self, patient):
         """    A method that models the processes / RTT patient pathway for attending the outpatient rheumatology clinic.
 
@@ -158,8 +157,8 @@ class rheum_Model:
             patient (_FOPA_Patient class_): An instantiated object of class FOPA_Patient
         """
 
-        patient.assign_firstonly(self.g.prob_firstonly) # Assign whether first-only pathway       
-        patient.sub_RTT_priority() # add some variability to priority within RTT queue (increment to its '3' priority)        
+        patient.assign_firstonly(self.g.prob_firstonly) # Assign whether first-only pathway
+        patient.sub_RTT_priority() # add some variability to priority within RTT queue (increment to its '3' priority)
         patient.avoidable_firstonly(self.g.in_FOavoidable) # Assign, if 'first-only', whether pathway is avoided or not (e.g. A&G)
 
         # If first-only AND avoidance from A&G AND past warm-up period
@@ -169,11 +168,11 @@ class rheum_Model:
                 print(f"Patient {patient.id} had first outpatient avoided. Not added to log.")
 
         # ELSE
-        else:            
+        else:
 
             ############################################
             ### First outpatient appointment ####
-            ############################################        
+            ############################################
 
             # Record the time the patient started queuing for the first outpatient
             start_q_fopa = self.env.now
@@ -188,13 +187,13 @@ class rheum_Model:
                 yield req
 
                 # if non-first-only pathway
-                if patient.type != "First-only":                
+                if patient.type != "First-only":
                 # determine already their PIFU faith                
-                    if self.g.PIFUbigbang: # if 'big-bang' ('stock'), i.e. PIFU applied to all FY cohorts / pathways, draw PIFU for all                    
+                    if self.g.PIFUbigbang: # if 'big-bang' ('stock'), i.e. PIFU applied to all FY cohorts / pathways, draw PIFU for all
                         patient.triage_decision()
 
                     else:
-                        if self.env.now > (self.g.warm_duration - self.g.t_decision): # else, draw PIFU only if they are a new pathway entering PIFU eligibility (1 year follow-up) from after warm-up period                    
+                        if self.env.now > (self.g.warm_duration - self.g.t_decision): # else, draw PIFU only if they are a new pathway entering PIFU eligibility (1 year follow-up) from after warm-up period
                             patient.triage_decision()
                         else:
                             patient.type = "TFU" # if pathway started pre warm-up, keep them on traditional
@@ -227,7 +226,7 @@ class rheum_Model:
                     if self.g.debug and self.g.debuglevel>=2:
                         print(f" Patient {patient.id} queued {np.round(patient.q_time_fopa,2)} days for 1st app. Priority {patient.priority}")
 
-                # Line/list to add to appointment log held in memory (df) or saved (csv)         
+                # Line/list to add to appointment log held in memory (df) or saved (csv)
                 patient.ls_appt_to_add = [patient.id, patient.ls_appt[-1],patient.priority,patient.apptype,patient.type,patient.q_time_fopa,start_q_fopa,patient.tradition_dna,self.g.repid]
                 patient.ls_patient_to_add = [patient.id , patient.q_time_fopa,999,self.g.repid] # deprecated
 
@@ -246,14 +245,14 @@ class rheum_Model:
                 else:
                     patient.df_appt_to_add = pd.DataFrame( columns = ["P_ID","App_ID","priority","type","pathway","q_time","start_q","DNA","rep"] ,
                                                           data=[patient.ls_appt_to_add]) # row list to row dataframe
-                    patient.df_appt_to_add.set_index("App_ID", inplace=True)                    
+                    patient.df_appt_to_add.set_index("App_ID", inplace=True)
                     self.g.appt_queuing_results=self.g.appt_queuing_results.append(patient.df_appt_to_add)
-                    
+
                     df_to_add = pd.DataFrame( columns = ["P_ID","Q_time_fopa","Q_time_fuopa","rep"], data =[patient.ls_patient_to_add])
-                    df_to_add.set_index("P_ID", inplace=True)                                    
-                    if start_q_fopa > self.g.warm_duration: # don't save things in warm-up period           
+                    df_to_add.set_index("P_ID", inplace=True)
+                    if start_q_fopa > self.g.warm_duration: # don't save things in warm-up period
                         self.results_df = self.results_df.append(df_to_add)
-                                   
+
             patient.give_tfu_priority() # Assign traditional follow-up priority to subsequent requests
 
             ############################################
@@ -297,7 +296,7 @@ class rheum_Model:
                         patient.q_time_fuopa = end_q_fuopa - start_q_fuopa
 
                     patient.decision_DNA_tradtion() # Determine DNA faith
-                    if patient.tradition_dna==True:
+                    if patient.tradition_dna:
                         if self.g.debug  and self.g.debuglevel>=2:
                             print(f"Req {patient.ls_appt[-1]}: Patient {patient.id} queued {np.round(end_q_fuopa - start_q_fuopa,2)} for app {patient.used_fuopa}. Priority {patient.priority}")
                     else:
@@ -309,14 +308,14 @@ class rheum_Model:
                     yield self.env.timeout(1) # freeze for one time-unit (a day) - that same slot will only be available the next day
 
 
-                    # Add to appointment log or save            
-                    patient.ls_appt_to_add = [patient.id, patient.ls_appt[-1],patient.priority,"Traditional",patient.type,patient.q_time_fuopa,start_q_fuopa,patient.tradition_dna,self.g.repid]                            
-                    if self.g.loglinesave:                    
+                    # Add to appointment log or save
+                    patient.ls_appt_to_add = [patient.id, patient.ls_appt[-1],patient.priority,"Traditional",patient.type,patient.q_time_fuopa,start_q_fuopa,patient.tradition_dna,self.g.repid]
+                    if self.g.loglinesave:
                         with open(self.savepath +"appt_result.csv", "a") as f:
                             writer = csv.writer(f, delimiter=",")
                             writer.writerow(patient.ls_appt_to_add)
 
-                    else:                         
+                    else:
                         patient.df_appt_to_add = pd.DataFrame( columns = ["P_ID","App_ID","priority","type","pathway","q_time","start_q","DNA","rep"] ,
                                                               data=[patient.ls_appt_to_add])
                         patient.df_appt_to_add.set_index("App_ID", inplace=True)
@@ -330,7 +329,7 @@ class rheum_Model:
                         break
 
 
-            # If patient is PIFU pathway assigned (will only get to this portion of code if 'break' from traditional appointment cycle)    
+            # If patient is PIFU pathway assigned (will only get to this portion of code if 'break' from traditional appointment cycle)
             if patient.topifu:
 
                 if self.g.debug  and self.g.debuglevel>=2:
@@ -353,7 +352,7 @@ class rheum_Model:
                     self.g.patients_waiting_by_priority[patient.priority-1] += 1 # increment
 
 
-                    start_q_pifuopa = self.env.now            
+                    start_q_pifuopa = self.env.now
                     # Request slit
                     with self.consultant.request(priority = patient.priority) as req:
                         # Freeze the function until the request for a slot can be met
@@ -382,12 +381,12 @@ class rheum_Model:
                                 print(f"Req {patient.ls_appt[-1]}: Patient {patient.id} queued {np.round(patient.q_time_pifuopa,2)} days for app {patient.used_fuopa} - PIFU. Priority {patient.priority}")
 
 
-                        # Add to appointment log or save            
-                        patient.ls_appt_to_add = [patient.id, patient.ls_appt[-1],patient.priority,"PIFU",patient.type,end_q_pifuopa - start_q_pifuopa,start_q_pifuopa,patient.pifu_dna,self.g.repid]                            
-                        if self.g.loglinesave:                    
+                        # Add to appointment log or save
+                        patient.ls_appt_to_add = [patient.id, patient.ls_appt[-1],patient.priority,"PIFU",patient.type,end_q_pifuopa - start_q_pifuopa,start_q_pifuopa,patient.pifu_dna,self.g.repid]
+                        if self.g.loglinesave:
                             with open(self.savepath +"appt_result.csv", "a") as f:
                                 writer = csv.writer(f, delimiter=",")
-                                writer.writerow(patient.ls_appt_to_add) 
+                                writer.writerow(patient.ls_appt_to_add)
 
                         else:
                             patient.df_appt_to_add = pd.DataFrame( columns = ["P_ID","App_ID","priority","type","pathway","q_time","start_q","DNA","rep"] ,
@@ -395,12 +394,11 @@ class rheum_Model:
                             patient.df_appt_to_add.set_index("App_ID", inplace=True)
                             self.g.appt_queuing_results=self.g.appt_queuing_results.append(patient.df_appt_to_add)
 
-                    # break if time elapsed since first appointment exceeds follow-up horizon    
+                    # break if time elapsed since first appointment exceeds follow-up horizon
                     if self.env.now - end_q_fopa > patient.max_fuopa_tenor:
                         break
 
             else:
-                
                 if self.g.debug  and self.g.debuglevel>=2:
                     print(f"Patient {patient.id} not PIFU. Follows {patient.used_fuopa} traditional apps.")
 
@@ -445,8 +443,8 @@ class rheum_Model:
         self.mean_q_time_total = self.results_df.mean(axis=0)
 
     """ Deprecated. A method to write run results to file.  Here, we write the run number
-    # against the the calculated mean queuing time for the nurse across
-    # patients in the run.  Again, we can call this at the end of each run"""
+    against the the calculated mean queuing time for the nurse across
+    patients in the run.  Again, we can call this at the end of each run"""
     def write_run_results(self):
         with open(self.savepath +"trial_results.csv", "a") as f:
             writer = csv.writer(f, delimiter=",")
@@ -487,10 +485,10 @@ class rheum_Model:
         markers = ['o', 'x', '^']
         for priority in range(1, 4):
             x = self.g.appt_queuing_results[self.g.appt_queuing_results['priority'] == priority].index
-            
+
             y = (self.g.appt_queuing_results
                  [self.g.appt_queuing_results['priority'] == priority]['q_time'])
-            
+
             ax22.plot(x, y, marker=markers[priority - 1], label='Priority ' + str(priority))
         ax22.set_xlabel('Appointment')
         ax22.set_ylabel('Queuing time')
@@ -530,7 +528,7 @@ class rheum_Model:
         #     x = self.g.appt_queuing_results.index
         #     # Chart loops through 3 priorites
 
-        #     x = (self.g.appt_queuing_results[self.g.appt_queuing_results['priority'] == priority].index) 
+        #     x = (self.g.appt_queuing_results[self.g.appt_queuing_results['priority'] == priority].index)
         #     y = (self.g.appt_queuing_results
         #          [self.g.appt_queuing_results['priority'] == priority]['q_time'])
 
@@ -541,7 +539,7 @@ class rheum_Model:
         #     ax22.set_title('Queuing time by type')
         #     ax22.grid(True, which='both', lw=1, ls='--', c='.75')
 
-        
+
         # Figure 5: System level queuing results - number waiting vs audit time point # change to bar chart?
         ax2 = fig.add_subplot(245)
         x = self.g.results['time']
@@ -575,7 +573,7 @@ class rheum_Model:
 
         # Adjust figure spacing
         fig.tight_layout(pad=2)
-        
+
         # return fig
         return fig
 
@@ -621,9 +619,9 @@ class rheum_Model:
                 print(f"--- Slots used: {self.consultant.count}")
                 print("--")
 
-            ## alternative with save to file                        
+            ## alternative with save to file
             if self.g.loglinesave:
-                ls_audit_to_add = [self.env.now, len(FOPA_Patient.all_patients), self.g.patients_waiting, self.g.patients_waiting_by_priority[0], self.g.patients_waiting_by_priority[1], self.g.patients_waiting_by_priority[2],self.consultant.count,self.g.repid]                                               
+                ls_audit_to_add = [self.env.now, len(FOPA_Patient.all_patients), self.g.patients_waiting, self.g.patients_waiting_by_priority[0], self.g.patients_waiting_by_priority[1], self.g.patients_waiting_by_priority[2],self.consultant.count,self.g.repid]
                 with open(self.savepath +"batch_mon_audit_ls.csv", "a") as f:
                     writer = csv.writer(f, delimiter=",")
                     writer.writerow(ls_audit_to_add)
@@ -641,11 +639,11 @@ class rheum_Model:
                 (self.g.audit_patients_waiting_p3.append
                   (self.g.patients_waiting_by_priority[2]))
 
-                # Record patients waiting by asking length of dictionary of all patients 
+                # Record patients waiting by asking length of dictionary of all patients
                 # (another way of doing things)
                 self.g.audit_patients_in_system.append(len(FOPA_Patient.all_patients))
                 # Record resources occupied (consultant)
-                self.g.audit_resources_used.append(self.consultant.count)                
+                self.g.audit_resources_used.append(self.consultant.count)
 
             # Trigger next audit after interval
             yield self.env.timeout(self.g.audit_interval)
@@ -691,12 +689,12 @@ class rheum_Model:
         else:
             self.build_audit_results() # assemple from lists in memory
 
-        # Load Results log - patient 
-        if self.g.loglinesave:    
+        # Load Results log - patient
+        if self.g.loglinesave:
             self.results_df = pd.read_csv(self.savepath +"patient_result2.csv")
 
-        # Load Results log - patient 
-        if self.g.loglinesave:    
+        # Load Results log - patient
+        if self.g.loglinesave:
             self.g.appt_queuing_results = pd.read_csv(self.savepath +"appt_result.csv")
 
         # Calculate run results (aggregate). Run but deprecated in favour of batch methods
