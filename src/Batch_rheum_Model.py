@@ -12,10 +12,10 @@ Time unit: day"""
 
 import warnings
 warnings.simplefilter(action='ignore', category=FutureWarning)
+from datetime import datetime
 import pandas as pd
 import matplotlib.pyplot as plt
 import seaborn as sns
-from datetime import datetime
 import simpy
 
 from src.helpers import mean_confidence_interval
@@ -212,7 +212,7 @@ class Batch_rheum_model:
         Returns:
             _type_: various outputs for streamlit . Others saved to file or kept in self of Class instance.
         """
-        
+
         for run in range(reps):
 
             if self.g.debug  and self.g.debuglevel>=0:
