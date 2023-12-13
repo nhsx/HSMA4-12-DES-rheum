@@ -179,7 +179,7 @@ of the [Open Government 3.0][ogl] licence.
 
 ## Contact
 
-To find out more about the [Digitial Analytics and Research Team](https://www.nhsx.nhs.uk/key-tools-and-info/nhsx-analytics-unit/) visit our [project website](https://nhsx.github.io/AnalyticsUnit/projects.html) or get in touch at [datascience@nhs.net](mailto:datascience@nhs.net).
+To find out more about the [Digital Analytics and Research Team](https://www.nhsx.nhs.uk/key-tools-and-info/nhsx-analytics-unit/) visit our [project website](https://nhsx.github.io/AnalyticsUnit/projects.html) and [Data Science Signpost site](https://nhsengland.github.io/DataScience-Signpost/) or get in touch at [datascience@nhs.net](mailto:datascience@nhs.net).
 
 To find out more about the HSMA programme please visit the [HSMA website](https://arc-swp.nihr.ac.uk/training-type/health-service-modelling-associates-programme-hsma/).
 
