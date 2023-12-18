@@ -83,13 +83,13 @@ Search and install.
     - ```python -m venv venvpa```
     -	Press Shift + Control + P to open the Command Palette and click on the *Python: Select Interpreter*.
     -	Select the Python interpreter `venvpa`.
-    -	Activate the virtual environment using the command prompt (you may need to change elevation rights):
+    -	Activate the virtual environment using powershell (you may need to change elevation rights):
     ```venvpa\Scripts\activate.ps1```
     - Install all the required libraries by using the command:
-    - ```pip install -r requirements.txt```
+        - ```pip install -r requirements.txt```
     - Or the following:
-    - ```pip install pandas numpy matplotlib seaborn```
-    - ``` pip install simpy streamlit scipy```
+        - ```pip install pandas numpy matplotlib seaborn```
+        - ``` pip install simpy streamlit scipy```
 
 
 ### Usage
