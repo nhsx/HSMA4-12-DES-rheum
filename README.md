@@ -1,8 +1,6 @@
 ![image](https://user-images.githubusercontent.com/69211911/186386851-61f28c91-c9de-4018-be58-49d7fdc80385.png)
 
-
-
-## About the Project
+### About the Project
 
 [![status: experimental](https://github.com/GIScience/badges/raw/master/status/experimental.svg)](https://github.com/GIScience/badges#experimental)
 
@@ -34,7 +32,7 @@ As such, in this project we propose to use Discrete Event Simulation - where ind
 
 We focussed on rheumatology given that rheumatology has a good clinical evidence base on PIFU [5-10]; documented pathways [3,7]; PIFU is actively endorsed [3,4,7]; and that it is a mainly outpatient specialty with many chronic patients on long-term follow-up, meaning that the effect of PIFU may be amplified [3].
 
-## Overview of method
+### Overview of method
 
 An overview of the simplified pathway / process map, as employed in the DES `simpy` model, is shown below.
 
@@ -44,35 +42,39 @@ An intuition of the flow (with changed parameters to improve intuitiveness and c
 
 ![plot](./readme-figures/process_map_viz_simpyflow_Villus.gif)
 
+### Project Stucture
 
-## Project code
+- The main code is found in the `./scr` folder of the repository (see Usage below for more information)
+- The accompanying documentation can be found here (TBA).
 
 ### Built With
 
 [![Python v3.9](https://img.shields.io/badge/python-v3.8-blue.svg)](https://www.python.org/downloads/release/python-380/)
 
-### Environment setup
+### Getting Started
+
+#### Installation
 
 To run the model locally you will need to have installed GitHub Desktop (or equivalent like git cli), Python and VSCode (or equivalent editors like Spyper).
 Below we outline the process with these softwares and based on Windows, but others could be used.
 
-#### 1. Install Github Desktop
+##### 1. Install Github Desktop
 - Search and install.
 - Set up with github account
 
-#### 2. Install Python
+##### 2. Install Python
 Search and install.
 
-#### 2. Install [VS Code](https://code.visualstudio.com/) 
+##### 3. Install [VS Code](https://code.visualstudio.com/) 
 - Search and install.
 
-#### 4. Getting the code on your PC
+##### 4. Getting the code on your PC
 - Visit: [https://github.com/nhsx/HSMA4-12-DES-rheum/](https://github.com/nhsx/HSMA4-12-DES-rheum/) 
 - click the *<>Code* button and click *Open with GitHub Desktop*
 - click the *Clone* button to save/clone the code.
 - click *Current Repository*, select *HSMA4-12-DES-rheum* and right-click on the mouse/trackpad and select *Open in Visual Studio Code*; this will open VSCode on a separate window.
 
-#### 4. Setting up VSCode 
+#### 5. Setting up VSCode 
 - On the VSCode, press the “extensions” button on the left-hand panel (or press Ctrl+Shift+X). Search for “python” and press install.
 
 -	At the top bar, click Terminal > New Terminal (if not in there, click on the three-dot … and click Terminal > New Terminal)
@@ -90,11 +92,11 @@ Search and install.
     - ``` pip install simpy streamlit scipy```
 
 
-### Running the model
+### Usage
 
 The main `simpy` model implementation is in `Batch_rheum_Model.py` but the model is run from either a Python script (full flexibility) or an interactive web app (GUI but more limited user parameters).
 
-#### Via Python script or jupyter notebook
+#### Via Python script or Jupyter notebook
 
 Run `simpy_rheum_v004_run.py` in Python (spyder, VS Code) or from `simpy_rheum_v004_notebook.ipynb` (Jupyter Notebook). 
 If using the Python notebook, use ```pip install ipykernel``` and select the interpreter as `venvpa` above. The cells can then be run.
@@ -111,7 +113,7 @@ Overview instructions:
 
 Detailed instructions: see [this tutorial](https://www.youtube.com/watch?v=_PPUk__mXLI) for guidance.
 
-### Post-processing scripts
+#### Post-processing scripts
 
 Some post-processing scripts for the generated logs from the simulation have been created in R, see [https://github.com/nhsx/HSMA4-12-DES-rheum/post-processing](https://github.com/nhsx/HSMA4-12-DES-rheum/tree/main/post-processing). These include:
 - Plots of KPIs across scenarios and replications, as shown in example outputs below (with `ggplot2`)
@@ -120,13 +122,13 @@ Some post-processing scripts for the generated logs from the simulation have bee
   These will need adapting for new outputs and experiments.
 
 
-## Example outputs
+### Example outputs
 
-## Illustrative use case ("V3"), a stylistic trust
+#### Illustrative use case ("V3"), a stylistic trust
 
 As an example of the model in operation, we aimed to create a hypothetical baseline case for a fictitious trust with realistic parameters and assumptions.
 
-### Illustrative use case ("V3") - parameters
+#### Illustrative use case ("V3") - parameters
 
 We obtained parameter inputs from GIRFT guidance, NHS Digital, clinical data and publications to build a hypothetical baseline case for a fictitious trust with realistic parameters and assumptions, including reasonable resulting waiting list characteristics.
 
@@ -138,7 +140,7 @@ Some details of parameters for the use case, both the baseline and what-if, can 
 
 ![plot - V3 what-if scenarios](./readme-figures/model_usecaseV3_whatifs.PNG)
 
-### Illustrative use case ("V3") - outputs
+#### Illustrative use case ("V3") - outputs
 
 Some outputs are shown below:
 
@@ -150,8 +152,11 @@ Some outputs are shown below:
 
 nb: `simpy` output logs themselves not uploaded to repo due to size. Can be regenerated with the code given (the current parameters are set to match scenario A above, for the use case "V3"). The plots were created upon post-processing of `simpy` logs of appointments and patients across simulated scenarios, with R script `80-postprocessing_plots.R`.
 
+### Roadmap
 
-## Contributing
+See the [repo issues](https://github.com/nhsx/HSMA4-12-DES-rheum/issues) for a list of proposed features (and known issues).
+
+### Contributing
 
 Contributions are what make the open source community such an amazing place to learn, inspire, and create. Any contributions you make are **greatly appreciated**.
 
@@ -163,7 +168,7 @@ Contributions are what make the open source community such an amazing place to l
 
 _See [CONTRIBUTING.md](./CONTRIBUTING.md) for detailed guidance._
 
-## License
+### License
 
 Unless stated otherwise, the codebase is released under [the MIT Licence][mit].
 This covers both the codebase and any sample code in the documentation.
@@ -177,7 +182,7 @@ of the [Open Government 3.0][ogl] licence.
 [copyright]: http://www.nationalarchives.gov.uk/information-management/re-using-public-sector-information/uk-government-licensing-framework/crown-copyright/
 [ogl]: http://www.nationalarchives.gov.uk/doc/open-government-licence/version/3/
 
-## Contact
+### Contact
 
 To find out more about the [Digital Analytics and Research Team](https://www.nhsx.nhs.uk/key-tools-and-info/nhsx-analytics-unit/) visit our [project website](https://nhsx.github.io/AnalyticsUnit/projects.html) and [Data Science Signpost site](https://nhsengland.github.io/DataScience-Signpost/) or get in touch at [datascience@nhs.net](mailto:datascience@nhs.net).
 
