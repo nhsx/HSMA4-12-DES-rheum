@@ -14,6 +14,8 @@
 
 **HSMA4 mentor:** Dr Alison Harper, U Exeter 
 
+**Full documentation:** [MkDocs repo](https://github.com/nhsengland/HSMA4-12-DES-rheum-mkdocs) (private repo)
+
 **Context**
 
 The pandemic has had a considerable impact on elective care and currently, the waiting list is at its highest on record, with over 6.6 million people waiting for consultant-led elective care [1]. It is estimated that around 6M fewer people completed elective pathways between January 2020 and July 2021 [2]. Operational performance, defined by the proportion of those seen within 18 weeks (target of 92%) has dropped significantly. The proportion seen within 18 weeks has dropped to below 65%[1].
@@ -45,7 +47,7 @@ An intuition of the flow (with changed parameters to improve intuitiveness and c
 ### Project Stucture
 
 - The main code is found in the `./scr` folder of the repository (see Usage below for more information)
-- The accompanying documentation can be found here (TBA).
+- The accompanying documentation can be found here (private repo): [MkDocs repo](https://github.com/nhsengland/HSMA4-12-DES-rheum-mkdocs).
 
 ### Built With
 
